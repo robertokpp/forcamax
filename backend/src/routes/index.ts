@@ -4,6 +4,7 @@ import { Router } from "express";
 const router = Router();
 
 //Rotas publicas
+
 //router.use("/",);
 
 // Routes private
