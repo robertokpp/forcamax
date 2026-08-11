@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from "express";
+/*import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 import { authConfig } from "@/configs/auth";
@@ -39,4 +39,4 @@ function ensureAuthenticated(
   }
 }
 
-export { ensureAuthenticated };
+export { ensureAuthenticated };*/

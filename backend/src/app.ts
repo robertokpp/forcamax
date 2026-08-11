@@ -1,24 +1,24 @@
-import cors from "cors";
+import { errorHandling } from "./middlewares/error-handling.js";
+import { uploadDirectory } from "./config/upload.js";
+import { router } from "./routes/index.js";
 import express from "express";
-import { env } from "./config/env.js";
-import { database } from "./lib/database.js";
+import "express-async-error";
+import cors from "cors";
 
-export const app = express();
 
-app.disable("x-powered-by");
-app.use(cors({ origin: env.allowedOrigins?.length ? env.allowedOrigins : true }));
+const app = express();
+const allowedOrigins = process.env.APP_ORIGIN?.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({ origin: allowedOrigins?.length ? allowedOrigins : true }));
 app.use(express.json());
-
-app.get("/", (_request, response) => {
-  response.json({ name: "app-skeleton-api", status: "running" });
+app.use("/uploads", express.static(uploadDirectory));
+app.get("/health", (_request, response) => {
+  response.status(200).json({ status: "ok" });
 });
+app.use(router);
+app.use(errorHandling);
 
-app.get("/health", async (_request, response) => {
-  try {
-    await database.query("SELECT 1");
-    response.json({ status: "ok", database: "connected" });
-  } catch {
-    response.status(503).json({ status: "error", database: "disconnected" });
-  }
-});
+export { app };
 

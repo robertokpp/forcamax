@@ -1,4 +1,4 @@
-type UserAPIRole = "ADMIN" | "CLIENT" | "TECHNICAL";
+/* type UserAPIRole = "ADMIN" | "CLIENT" | "TECHNICAL";
 
 type UserAPIResponse = {
   token: string;
@@ -9,4 +9,4 @@ type UserAPIResponse = {
     role: UserAPIRole;
     avatar: string
   };
-};
+}; */

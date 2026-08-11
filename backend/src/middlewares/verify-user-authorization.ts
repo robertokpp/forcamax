@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+/*import { Request, Response, NextFunction } from "express";
 import { AppError } from "@/utils/AppError";
 function verifyUserAuthorization(role: string[]) {
   return (request: Request, response: Response, next: NextFunction) => {
@@ -9,4 +9,4 @@ function verifyUserAuthorization(role: string[]) {
   };
 }
 
-export { verifyUserAuthorization };
+export { verifyUserAuthorization };*/
