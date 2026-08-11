@@ -1,4 +1,4 @@
-import { AppError } from "@/utils/AppError";
+import { AppError } from "@/utils/AppError.js";
 import { ErrorRequestHandler } from "express";
 import { ZodError, z } from "zod";
 
@@ -21,5 +21,5 @@ export const errorHandling: ErrorRequestHandler = (
   }
 
   response.status(500).json({ message: error.message });
-  return
+  return;
 };
