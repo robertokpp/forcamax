@@ -1,11 +1,15 @@
-import dotenv from "dotenv"
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
+
+const secret = process.env.SECRET;
+
+if (!secret) {
+  throw new Error("A variável SECRET é obrigatória.");
+}
 
 export const authConfig = {
   jwt: {
-    secret: process.env.SECRET!,
-    expiresIn: "24h"
-  }
-}
-
-
+    secret,
+    expiresIn: "24h" as const,
+  },
+};
