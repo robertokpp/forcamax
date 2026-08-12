@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { prisma } from "@/lib/prisma.js";
-import bcrypt from "bcrypt";
 import { z } from "zod";
+import { hash } from "bcrypt";
 
 class UserController {
   async create(request: Request, response: Response) {
@@ -12,7 +12,7 @@ class UserController {
     });
 
     const { name, email, password } = bodySchema.parse(request.body);
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
