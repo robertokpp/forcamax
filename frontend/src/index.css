@@ -16,18 +16,20 @@
   --color-destructive: #ef4444;
   --color-primary-foreground: #0c0c0e;
   --color-secondary: #1e1e22;
-  --chart-1: #c8f135;
-  --chart-2: #38bdf8;
-  --chart-3: #fb923c;
-  --chart-4: #a78bfa;
-  --chart-5: #34d399;
-  --sidebar: #101012;
-  --sidebar-foreground: #f0f0f2;
-  --sidebar-primary: #c8f135;
-  --sidebar-accent: #1e1e22;
-  --sidebar-border: rgba(255, 255, 255, 0.06);
-  --font-size: 16px --font-weight-medium: 600;
+  --color-chart-1: #c8f135;
+  --color-chart-2: #38bdf8;
+  --color-chart-3: #fb923c;
+  --color-chart-4: #a78bfa;
+  --color-chart-5: #34d399;
+  --color-sidebar: #101012;
+  --color-sidebar-foreground: #f0f0f2;
+  --color-sidebar-primary: #c8f135;
+  --color-sidebar-accent: #1e1e22;
+  --color-sidebar-border: rgba(255, 255, 255, 0.06);
+
+  --font-size: 16px;
+  --font-weight-medium: 600;
   --font-weight-normal: 400;
   --radius: 0.5rem;
-  --ring: #c8f135;
+  --color-ring: #c8f135;
 }
