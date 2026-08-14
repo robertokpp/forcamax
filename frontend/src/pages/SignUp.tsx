@@ -4,10 +4,17 @@ import iconCheck from "../assets/icon-check.svg";
 
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 
 export function SignUp() {
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+
+  async function onSubmit(e: React.SubmitEvent) {
+    e.preventDefault();
+  }
+
   return (
     <main className="bg-background w-full h-screen flex flex-col justify-center items-center px-6 py-12">
       <header className="flex items-center gap-2.5 mb-10">
@@ -24,23 +31,29 @@ export function SignUp() {
         </p>
       </div>
 
-      <form action="" className="w-full flex flex-col gap-4">
-        <Input id="name" label="Nome completo"></Input>
-        <Input id="email" type="email" label="E-mail"></Input>
+      <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
+        <Input required id="name" label="Nome completo"></Input>
+        <Input required id="email" type="email" label="E-mail"></Input>
 
         <div className="flex gap-3">
-          <Input  id="password" label="senha" type="password"></Input>
-          <Input  id="confirmar" label="confirmar" type="password"></Input>
+          <Input required id="password" label="senha" type="password"></Input>
+          <Input
+            required
+            id="confirmar"
+            label="confirmar"
+            type="password"
+          ></Input>
         </div>
         <div className="flex gap-1 items-center">
           <div
             className={`relative w-5 h-5 flex items-center justify-center rounded-md border-2  hover:border-2 hover:border-accent ${isChecked ? "bg-accent border-accent" : "bg-secondary border-[#2E2E32]"}`}
           >
             <input
+              required
               type="checkbox"
               checked={isChecked}
               onChange={(e) => setIsChecked(e.target.checked)}
-              className="w-full h-full absolute appearance-none" 
+              className="w-full h-full absolute appearance-none"
             />
             {isChecked && <img src={iconCheck} />}
           </div>
@@ -51,16 +64,19 @@ export function SignUp() {
           </small>
         </div>
 
-        <Button disabled={!isChecked}>
-          <img src={iconZap}/>
+        <Button type="submit" disabled={!isChecked}>
+          <img src={iconZap} />
           CRIAR CONTA GRÁTIS
         </Button>
-
       </form>
 
       <div className="flex w-full items-center justify-center mt-8 gap-0.5">
         <p className="text-muted-foreground">Já tem conta?</p>
-        <Button variant="secondary" className="w-fit p-0">
+        <Button
+          onClick={() => navigate("/")}
+          variant="secondary"
+          className="w-fit p-0"
+        >
           Entrar
         </Button>
       </div>

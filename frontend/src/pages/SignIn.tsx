@@ -3,7 +3,11 @@ import iconArrowRight from "../assets/icon-arrowRight.svg";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
+import { useNavigate } from "react-router";
+
 export function SignIn() {
+
+  const navigate = useNavigate()
   return (
     <main className="bg-background w-full h-screen flex flex-col justify-center items-center px-6 py-12">
       <header className="flex items-center gap-2.5 mb-10">
@@ -37,7 +41,7 @@ export function SignIn() {
 
       <div className="flex w-full items-center justify-center mt-8">
         <p className="text-muted-foreground">Ainda não tem conta?</p>
-        <Button variant="secondary" className="w-fit p-0">Criar conta</Button>
+        <Button onClick={()=> navigate("/cadastrar")} variant="secondary" className="w-fit p-0">Criar conta</Button>
       </div>
     </main>
   );
