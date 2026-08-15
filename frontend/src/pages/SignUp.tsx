@@ -1,18 +1,55 @@
 import iconZap from "../assets/icon-zap.svg";
 import iconArrowRight from "../assets/icon-arrowRight.svg";
 import iconCheck from "../assets/icon-check.svg";
+import { api } from "../services/api";
 
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { z } from "zod";
+
+const bodySchema = z
+  .object({
+    name: z.string().min(3, "O nome deve conter ao menos 3 caracteres."),
+    email: z.email("Informe um e-mail valido.").toLowerCase(),
+    password: z.string().min(6, "A senha deve conter ao menos 6 caracteres."),
+    confirm: z.string(),
+  })
+  .refine(({ password, confirm }) => password === confirm, {
+    message: "As senha não confere",
+    path: ["confirm"],
+  })
+  .transform(({ confirm, ...data }) => data);
 
 export function SignUp() {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
+
+    try {
+      setIsLoading(true);
+      const data = bodySchema.parse({
+        name,
+        email,
+        password,
+        confirm,
+      });
+
+      await api.post("/user", data);
+    } catch (error) {
+      console.error("Erro ao criar conta:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -32,16 +69,39 @@ export function SignUp() {
       </div>
 
       <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
-        <Input required id="name" label="Nome completo"></Input>
-        <Input required id="email" type="email" label="E-mail"></Input>
+        <Input
+          required
+          id="name"
+          label="Nome completo"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        ></Input>
+
+        <Input
+          required
+          id="email"
+          type="email"
+          label="E-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        ></Input>
 
         <div className="flex gap-3">
-          <Input required id="password" label="senha" type="password"></Input>
+          <Input
+            required
+            id="password"
+            label="senha"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></Input>
           <Input
             required
             id="confirmar"
             label="confirmar"
             type="password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
           ></Input>
         </div>
         <div className="flex gap-1 items-center">
@@ -64,7 +124,7 @@ export function SignUp() {
           </small>
         </div>
 
-        <Button type="submit" disabled={!isChecked}>
+        <Button type="submit" isLoading={!isChecked || isLoading}>
           <img src={iconZap} />
           CRIAR CONTA GRÁTIS
         </Button>

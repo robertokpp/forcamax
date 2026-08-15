@@ -6,8 +6,7 @@ import { Free } from "./free";
 
 export function Routes() {
   const { session } = useAuth();
-
-  console.log(session)
+  
   function Route() {
     if (session) {
       return <Free />;
