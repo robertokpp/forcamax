@@ -8,6 +8,7 @@ import { Button } from "../components/Button";
 
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
 import { z } from "zod";
 
 const bodySchema = z
@@ -45,6 +46,14 @@ export function SignUp() {
       });
 
       await api.post("/user", data);
+
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirm("");
+      setIsChecked(false);
+
+      toast.success("Conta criada com sucesso");
     } catch (error) {
       console.error("Erro ao criar conta:", error);
     } finally {
@@ -54,6 +63,13 @@ export function SignUp() {
 
   return (
     <main className="bg-background w-full h-screen flex flex-col justify-center items-center px-6 py-12">
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#C8F135",
+          },
+        }}
+      />
       <header className="flex items-center gap-2.5 mb-10">
         <div className="w-8 h-8 bg-accent rounded-lg flex justify-center items-center">
           <img src={iconZap} alt="Icon de logo" />

@@ -15,6 +15,6 @@ router.use("/session", sessionsRouter);
 
 // Routes private
 router.use(ensureAuthenticated);
-//router.use("/",);
+//router.use("/profile");
 
 export { router };

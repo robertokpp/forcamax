@@ -4,10 +4,44 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import { z } from "zod";
+import { useAuth } from "../hooks/useAuth";
+import { api } from "../services/api";
+
+const bodySchema = z.object({
+  email: z.email(),
+  password: z.string(),
+});
 
 export function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const auth = useAuth();
 
-  const navigate = useNavigate()
+  async function onSubmit(e: React.SubmitEvent) {
+    e.preventDefault();
+
+    try {
+      setIsLoading(true);
+
+      const data = bodySchema.parse({
+        email,
+        password,
+      });
+
+      const response = await api.post("/session", data);
+
+      auth.save(response.data);
+    } catch (error) {
+      console.error("Erro ao inicializar a sessão:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const navigate = useNavigate();
   return (
     <main className="bg-background w-full h-screen flex flex-col justify-center items-center px-6 py-12">
       <header className="flex items-center gap-2.5 mb-10">
@@ -26,14 +60,27 @@ export function SignIn() {
         </p>
       </div>
 
-      <form action="" className="w-full flex flex-col gap-4">
-        <Input id="email" label="e-mail"></Input>
+      <form onSubmit={onSubmit} className="w-full flex flex-col gap-4">
+        <Input
+          id="email"
+          label="e-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        ></Input>
 
-        <Input id="password" label="senha" type="password">
-          <span className="text-accent text-[12px]">Esqueceu?</span>
+        <Input
+          id="password"
+          label="senha"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        >
+          <Button className="p-0 font-normal w-fit" variant="secondary">
+            Esqueceu?
+          </Button>
         </Input>
 
-        <Button>
+        <Button isLoading={isLoading} type="submit">
           <img src={iconArrowRight} alt="" />
           ENTRAR
         </Button>
@@ -41,7 +88,13 @@ export function SignIn() {
 
       <div className="flex w-full items-center justify-center mt-8">
         <p className="text-muted-foreground">Ainda não tem conta?</p>
-        <Button onClick={()=> navigate("/cadastrar")} variant="secondary" className="w-fit p-0">Criar conta</Button>
+        <Button
+          onClick={() => navigate("/cadastrar")}
+          variant="secondary"
+          className="w-fit p-0"
+        >
+          Criar conta
+        </Button>
       </div>
     </main>
   );

@@ -15,22 +15,28 @@ class SessionsController {
 
     const { email, password } = bodySchema.parse(request.body);
 
-    const user = await prisma.user.findFirst({
+    const userSession = await prisma.user.findUnique({
       where: { email },
+      omit: {
+        updatedAt: true,
+        createdAt: true,
+      },
     });
 
-    if (!user) {
+    if (!userSession) {
       throw new AppError("User or password incorrect", 401);
     }
 
-    const userMatched = await compare(password, user.password);
+    const userMatched = await compare(password, userSession.password);
 
     if (!userMatched) {
       throw new AppError("User or password incorrect", 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;
-    const token = jwt.sign({ sub: user.id }, secret, { expiresIn });
+    const token = jwt.sign({ sub: userSession.id }, secret, { expiresIn });
+
+    const { password: _password, ...user } = userSession;
 
     return response.json({ token, user });
   }

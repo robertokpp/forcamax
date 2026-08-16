@@ -21,7 +21,7 @@ export function Input({ label, id, className, children, ...rest }: Props) {
         type="text"
         id={id}
         className={twMerge(
-          `w-full bg-secondary py-3 px-11 rounded-xl border-2 border-[#2E2E32] text-white`,
+          `w-full bg-secondary py-3 px-11 rounded-xl border-2 border-[#2E2E32] text-white focus:outline-0 focus:border-accent hover:border-accent`,
           className,
         )}
         {...rest}
