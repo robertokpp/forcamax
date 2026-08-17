@@ -1,7 +1,7 @@
-import { AppError } from "@/utils/AppError.js";
-import { authConfig } from "@/config/auth.js";
+import { AppError } from "../utils/AppError.js";
+import { authConfig } from "../config/auth.js";
 import { Response, Request } from "express";
-import { prisma } from "@/lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 import { compare } from "bcrypt";
 import { z } from "zod";
 import jwt from "jsonwebtoken";

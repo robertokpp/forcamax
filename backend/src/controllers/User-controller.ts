@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
-import { prisma } from "@/lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 import { z } from "zod";
 import { hash } from "bcrypt";
-import { AppError } from "@/utils/AppError.js";
+import { AppError } from "../utils/AppError.js";
 
 class UserController {
   async create(request: Request, response: Response) {

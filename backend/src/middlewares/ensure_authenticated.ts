@@ -1,8 +1,8 @@
 import { Response, Request, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { AppError } from "@/utils/AppError.js";
-import { authConfig } from "@/config/auth.js";
+import { AppError } from "../utils/AppError.js";
+import { authConfig } from "../config/auth.js";
 
 interface TokenPayload extends JwtPayload {
   sub: string;
@@ -26,10 +26,7 @@ function ensureAuthenticated(
   }
 
   try {
-    const payload = jwt.verify(
-      token,
-      authConfig.jwt.secret,
-    ) as TokenPayload;
+    const payload = jwt.verify(token, authConfig.jwt.secret) as TokenPayload;
 
     if (!payload.sub) {
       throw new AppError("Invalid token", 401);

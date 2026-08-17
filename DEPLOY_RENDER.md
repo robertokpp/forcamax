@@ -55,8 +55,11 @@ Adicione em **Environment**:
 | `NODE_ENV` | `production` |
 | `DATABASE_URL` | Internal Database URL copiada do PostgreSQL |
 | `APP_ORIGIN` | URL pública do frontend, preenchida após o passo 4 |
+| `SECRET` | Chave aleatória forte e exclusiva do ambiente, usada para assinar os tokens JWT |
 
 Não é necessário definir `PORT`: o Render fornece essa variável automaticamente e a aplicação já a utiliza.
+
+Gere um valor diferente do ambiente local e cadastre-o como segredo no Render. Nunca exponha `SECRET` no frontend nem use uma variável com prefixo `VITE_`, pois esses valores são incorporados ao JavaScript público.
 
 ### Executar as migrations no plano gratuito
 

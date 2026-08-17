@@ -1,6 +1,6 @@
-import { AppError } from "@/utils/AppError.js";
 import { ErrorRequestHandler } from "express";
 import { ZodError, z } from "zod";
+import { AppError } from "../utils/AppError.js";
 
 export const errorHandling: ErrorRequestHandler = (
   error,
