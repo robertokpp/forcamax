@@ -8,8 +8,11 @@ class UserController {
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       name: z.string().min(3, "Coloque um nome valido."),
-      email: z.email("Informe um email valido."),
-      password: z.string().min(6, "Senha deve conter no mínimo 6 dígitos."),
+      email: z.email("Informe um email valido.").toLowerCase(),
+      password: z
+        .string()
+        .min(8, "A senha deve ter pelo menos 8 caracteres.")
+        .max(30, "A senha deve ter no máximo 30 caracteres."),
     });
 
     const { name, email, password } = bodySchema.parse(request.body);

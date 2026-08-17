@@ -15,11 +15,14 @@ const bodySchema = z
   .object({
     name: z.string().min(3, "O nome deve conter ao menos 3 caracteres."),
     email: z.email("Informe um e-mail valido.").toLowerCase(),
-    password: z.string().min(6, "A senha deve conter ao menos 6 caracteres."),
+    password: z
+      .string()
+      .min(8, "A senha deve ter pelo menos 8 caracteres.")
+      .max(30, "A senha deve ter no máximo 30 caracteres."),
     confirm: z.string(),
   })
   .refine(({ password, confirm }) => password === confirm, {
-    message: "As senha não confere",
+    message: "As senhas não conferem",
     path: ["confirm"],
   })
   .transform(({ confirm, ...data }) => data);

@@ -3,14 +3,19 @@ import { errorHandling } from "./middlewares/error-handling.js";
 import { router } from "./routes/index.js";
 import express from "express";
 import "express-async-error";
+import helmet from "helmet";
 import cors from "cors";
-
 
 const app = express();
 const allowedOrigins = process.env.APP_ORIGIN?.split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
+app.use(helmet());
 app.use(cors({ origin: allowedOrigins?.length ? allowedOrigins : true }));
 app.use(express.json());
 //app.use("/uploads", express.static(uploadDirectory));
@@ -21,4 +26,3 @@ app.use(router);
 app.use(errorHandling);
 
 export { app };
-
