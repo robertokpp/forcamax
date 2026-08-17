@@ -24,13 +24,13 @@ class SessionsController {
     });
 
     if (!userSession) {
-      throw new AppError("User or password incorrect", 401);
+      throw new AppError("Usuário ou senha incorreto.", 401);
     }
 
     const userMatched = await compare(password, userSession.password);
 
     if (!userMatched) {
-      throw new AppError("User or password incorrect", 401);
+      throw new AppError("Usuário ou senha incorreto.", 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;

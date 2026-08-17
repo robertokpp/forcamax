@@ -5,9 +5,11 @@ import { Button } from "../components/Button";
 
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { useAuth } from "../hooks/useAuth";
 import { api } from "../services/api";
+import { toast, Toaster } from "sonner";
+import { AxiosError } from "axios";
 
 const bodySchema = z.object({
   email: z.email(),
@@ -35,6 +37,14 @@ export function SignIn() {
 
       auth.save(response.data);
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(`${error.response?.data.message}`);
+      }
+
+      if(error instanceof ZodError ){
+        toast.error(`${error.message}`);
+      }
+
       console.error("Erro ao inicializar a sessão:", error);
     } finally {
       setIsLoading(false);
@@ -44,11 +54,12 @@ export function SignIn() {
   const navigate = useNavigate();
   return (
     <main className="bg-background w-full h-screen flex flex-col justify-center items-center px-6 py-12">
+      <Toaster/>
       <header className="flex items-center gap-2.5 mb-10">
         <div className="w-8 h-8 bg-accent rounded-lg flex justify-center items-center">
           <img src={iconZap} alt="Icon de logo" />
         </div>
-        <span className="text-foreground text-[18px] font-bold ">FORÇAMAX</span>
+        <span className="text-foreground text-[18px] font-bold">FORÇAMAX</span>
       </header>
 
       <div className="w-full mb-8">
