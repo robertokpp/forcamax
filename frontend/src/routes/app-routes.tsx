@@ -8,7 +8,7 @@ import { Agenda } from "../pages/Agenda";
 import { Conquest } from "../pages/Conquest";
 import { Menu } from "../components/Menu";
 
-export function Free() {
+export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Menu />}>

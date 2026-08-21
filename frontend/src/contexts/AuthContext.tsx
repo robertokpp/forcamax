@@ -37,25 +37,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.assign("/");
   }
 
-  function loadUser() {
-    const user = localStorage.getItem(`${LOCAL_STORAGE_KEY}:user`);
-    const token = localStorage.getItem(`${LOCAL_STORAGE_KEY}:token`);
+ async function loadUser() {
+  const user = localStorage.getItem(`${LOCAL_STORAGE_KEY}:user`);
+  const token = localStorage.getItem(`${LOCAL_STORAGE_KEY}:token`);
 
-    if (token && user) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      setSession({
-        token,
-        user: JSON.parse(user),
-      });
-    }
-
+  if (!token || !user) {
     setIsLoading(false);
+    return;
   }
 
-  useEffect(() => {
-    loadUser();
-  }, []);
+  try {
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+    await api.get("/session/validate");
+
+    setSession({
+      token,
+      user: JSON.parse(user),
+    });
+  } catch {
+    delete api.defaults.headers.common.Authorization;
+    localStorage.removeItem(`${LOCAL_STORAGE_KEY}:user`);
+    localStorage.removeItem(`${LOCAL_STORAGE_KEY}:token`);
+    setSession(null);
+  } finally {
+    setIsLoading(false);
+  }
+}
+
+useEffect(() => {
+  loadUser()
+}, [])
 
   return (
     <AuthContext.Provider value={{ session, save, isLoading, remove }}>

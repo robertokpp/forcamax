@@ -15,4 +15,8 @@ router.use("/session", sessionsRouter);
 router.use(ensureAuthenticated);
 //router.use("/profile");
 
+router.get("/session/validate", (_request, response) => {
+  return response.sendStatus(204);
+});
+
 export { router };
