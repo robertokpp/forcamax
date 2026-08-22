@@ -11,10 +11,10 @@ async function seed() {
     update: {},
   });
 
-  const exerciseTable = await prisma.exercises.findMany({});
+  const exerciseTable = await prisma.exercise.findMany({});
 
   if (exerciseTable.length === 0) {
-    await prisma.exercises.createMany({
+    await prisma.exercise.createMany({
       data: [
         {
           name: "Agachamento livre",
@@ -120,6 +120,70 @@ async function seed() {
             "Na posição de prancha, alterne rapidamente os joelhos em direção ao peito.",
           muscleGroup: "Abdômen, ombros e pernas",
           equipment: "Nenhum",
+        },
+      ],
+    });
+    const trainingTest = await prisma.training.create({
+      data: {
+        name: "Peito & triceps",
+        difficulty: "intermediary",
+        description: "Primeiro treino para teste",
+        user: {
+          connect: { email },
+        },
+        exercises: {
+          connect: [
+            { id: exerciseTable[0].id },
+            { id: exerciseTable[1].id },
+            { id: exerciseTable[2].id },
+            { id: exerciseTable[3].id },
+            { id: exerciseTable[4].id },
+          ],
+        },
+      },
+    });
+
+    await prisma.trainingExercise.createMany({
+      data: [
+        {
+          trainingId: trainingTest.id,
+          exerciseId: exerciseTable[0].id,
+          sets: 2,
+          repetitions: "10",
+          weight: "5kg",
+          interval: "1",
+        },
+        {
+          trainingId: trainingTest.id,
+          exerciseId: exerciseTable[1].id,
+          sets: 5,
+          repetitions: "10",
+          weight: "12kg",
+          interval: "1",
+        },
+        {
+          trainingId: trainingTest.id,
+          exerciseId: exerciseTable[2].id,
+          sets: 3,
+          repetitions: "8",
+          weight: "10kg",
+          interval: "1",
+        },
+        {
+          trainingId: trainingTest.id,
+          exerciseId: exerciseTable[3].id,
+          sets: 5,
+          repetitions: "15",
+          weight: "45kg",
+          interval: "4",
+        },
+        {
+          trainingId: trainingTest.id,
+          exerciseId: exerciseTable[4].id,
+          sets: 2,
+          repetitions: "10",
+          weight: "2kg",
+          interval: "2",
         },
       ],
     });

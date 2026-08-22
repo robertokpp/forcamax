@@ -7,4 +7,5 @@ const userController = new UserController();
 
 userRouter.post("/", userCreationRateLimit, userController.create);
 
+
 export { userRouter };
