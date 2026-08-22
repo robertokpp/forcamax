@@ -58,7 +58,8 @@ export function SignUp() {
 
       toast.success("Conta criada com sucesso");
     } catch (error) {
-      console.error("Erro ao criar conta:", error);
+      
+      toast.error("Erro ao criar conta:");
     } finally {
       setIsLoading(false);
     }

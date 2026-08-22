@@ -22,7 +22,7 @@ class UserController {
     });
 
     if (userVerify) {
-      throw new AppError("E-mail já cadastrado");
+      throw new AppError("E-mail já cadastrado", 409);
     }
 
     const hashedPassword = await hash(password, 10);
