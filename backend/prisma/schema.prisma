@@ -12,6 +12,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Difficulty {
+  beginner
+  intermediary
+  advanced
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
@@ -20,17 +26,59 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  Training Training[]
+
   @@map("users")
 }
 
-model Exercises {
-  id String @id @default(uuid())
-  name String
+model Exercise {
+  id          String  @id @default(uuid())
+  name        String
   description String
   muscleGroup String
-  equipment String?
+  equipment   String?
+
+  training Training[]
+  trainingExercises TrainingExercise[]
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@map("exercise")
+}
+
+model Training {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  difficulty  Difficulty
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  exercises         Exercise[]
+  trainingExercises TrainingExercise[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("exercises")
+  @@map("Training")
+}
+
+model TrainingExercise {
+  id String @id @default(uuid())
+
+  trainingId String
+  training   Training @relation(fields: [trainingId], references: [id])
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  sets        Int?
+  repetitions String?
+  weight String?
+  interval String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
