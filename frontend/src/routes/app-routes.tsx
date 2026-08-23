@@ -7,6 +7,7 @@ import { Profile } from "../pages/Profile";
 import { Agenda } from "../pages/Agenda";
 import { Conquest } from "../pages/Conquest";
 import { Menu } from "../components/Menu";
+import { NotFound } from "../pages/NotFound";
 
 export function AppRoutes() {
   return (
@@ -18,6 +19,7 @@ export function AppRoutes() {
         <Route path="/Progresso" element={<Progress />} />
         <Route path="/Conquistas" element={<Conquest />} />
         <Route path="/Perfil" element={<Profile />} />
+        <Route path="/*" element={<NotFound />} />
       </Route>
     </Routes>
   );

@@ -1,19 +1,42 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
-import { Input } from "../components/Input";
 import { api } from "../services/api";
+import { IconHeart, IconPlus } from "../components/Icons";
+import { Card } from "../components/Card";
+
+interface Training {
+  id: string;
+  name: string;
+  difficulty: string;
+}
+
+interface Exercises {
+  name: string;
+  muscleGroup: string;
+  interval: string;
+  weight: string;
+  repetitions: string;
+  set: string;
+}
 
 export function Training() {
+  const [trainings, setTrainings] = useState<Training[]>([]);
+  const [exercises, setExercises] = useState<Exercises[]>([]);
+  const [openCard, setOpenCard] = useState(null);
+
   async function fetchTraining() {
     const response = await api.get("/training");
+    setTrainings(response.data);
+  }
 
-    console.log(response.data);
+  async function openCards(trainingId: string) {
+    const response = await api.get(`/exercises/${trainingId}`);
+    setExercises(response.data);
   }
 
   useEffect(() => {
     fetchTraining();
   }, []);
-
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -23,7 +46,9 @@ export function Training() {
           <p>Sábado, 5 de Julho · Semana 27</p>
         </div>
         <div>
-          <div className="w-10 h-10 bg-accent/10 rounded-full border border-accent"></div>
+          <div className="flex justify-center items-center p-2 bg-accent/10 rounded-full border border-accent">
+            <IconHeart color="#c8f135"></IconHeart>
+          </div>
         </div>
       </header>
 
@@ -31,31 +56,21 @@ export function Training() {
         <div className="text-white flex justify-between">
           <div>
             <p>MEUS TREINOS</p>
-            <small>4 planos</small>
+            {trainings.length === 0 && <small>Ainda não há treinos</small>}
+            {trainings.length === 1 ? (
+              <small>
+                {trainings.length}
+                <small> Plano</small>
+              </small>
+            ) : (
+              <small>
+                {trainings.length}
+                <small> Planos</small>
+              </small>
+            )}
           </div>
-          <Button className="w-fit">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.16663 10H15.8333"
-                stroke="#000"
-                stroke-width="1.66667"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M10 4.16666V15.8333"
-                stroke="#000"
-                stroke-width="1.66667"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+          <Button title="Novo treino" className="w-fit">
+            <IconPlus />
           </Button>
         </div>
 
@@ -65,31 +80,16 @@ export function Training() {
         </div>
       </section>
 
-      <section className="p-4">
-        <div>
-          <Input
-            id="pesquisa"
-            label=""
-            placeholder="Buscar treino ou músculo..."
-          ></Input>
-        </div>
-
-        <div className="flex flex-col bg-card p-4 text-white rounded-xl">
-          <div className="flex gap-2">
-            <div className="bg-accent/10 text-accent rounded-sm px-2">
-              <small>PUSH</small>
-            </div>
-            <div>
-              <small>Intermediário</small>
-            </div>
-          </div>
-          <p className="font-bold">PEITO E TRICEPS</p>
-          <div className="flex gap-4 text-muted-foreground">
-            <small>55 min</small>
-            <small>8 ex.</small>
-            <small>460</small>
-          </div>
-        </div>
+      <section className="p-4 flex flex-col gap-4">
+        {trainings.map((item) => (
+          <Card
+            onClick={() => openCards(item.id)}
+            className="cursor"
+            key={item.id}
+            title={item.name}
+            difficulty={item.difficulty}
+          ></Card>
+        ))}
       </section>
     </div>
   );

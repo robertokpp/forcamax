@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export function Menu() {
   const { session } = useAuth();
-  const [isOpenMenu, setIsOpenMenu] = useState(true);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   return (
     <div className="flex min-h-screen relative">
@@ -31,7 +31,6 @@ export function Menu() {
         <div className="bg-sidebar w-fit min-h-screen p-4 flex-col flex shadow-xl">
           <aside className="p-4 flex items-center justify-between gap-8">
             <HeaderLogo />
-
 
             <button
               type="button"

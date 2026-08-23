@@ -4,6 +4,7 @@ import { ensureAuthenticated } from "../middlewares/ensure_authenticated.js";
 import { userRouter } from "./user-router.js";
 import { sessionsRouter } from "./sessions-router.js";
 import { trainingRouter } from "./training-router.js";
+import { exercisesRouter } from "./exercises-router.js";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.get("/session/validate", (_request, response) => {
   return response.sendStatus(204);
 });
 router.use("/training", trainingRouter);
+router.use("/exercises", exercisesRouter);
 
 export { router };

@@ -8,7 +8,7 @@ async function seed() {
   await prisma.user.upsert({
     where: { email },
     create: { name: "roberto", email, password },
-    update: {},
+    update: { name: "roberto", password },
   });
 
   const exerciseTable = await prisma.exercise.findMany({});
