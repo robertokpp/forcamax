@@ -9,7 +9,7 @@ export function Card({ tag, difficulty, title, className, ...rest }: Props) {
   return (
     <button
       className={twMerge(
-        `flex flex-col bg-card p-4 text-white rounded-xl cursor-pointer`,
+        `flex flex-col bg-card border border-[#252526] p-4 text-white rounded-xl cursor-pointer`,
         className,
       )}
       {...rest}

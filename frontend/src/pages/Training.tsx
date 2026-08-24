@@ -3,6 +3,7 @@ import { Button } from "../components/Button";
 import { api } from "../services/api";
 import { IconHeart, IconPlus } from "../components/Icons";
 import { Card } from "../components/Card";
+import { CardExercise } from "../components/CardExercise";
 
 interface Training {
   id: string;
@@ -32,6 +33,7 @@ export function Training() {
   async function openCards(trainingId: string) {
     const response = await api.get(`/exercises/${trainingId}`);
     setExercises(response.data);
+    console.log(response.data);
   }
 
   useEffect(() => {
@@ -89,6 +91,12 @@ export function Training() {
             title={item.name}
             difficulty={item.difficulty}
           ></Card>
+        ))}
+      </section>
+
+      <section className="p-4 flex flex-col gap-2">
+        {exercises.map((exercise, index) => (
+          <CardExercise index={index} name={exercise.name}></CardExercise>
         ))}
       </section>
     </div>

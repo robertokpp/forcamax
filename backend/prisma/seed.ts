@@ -123,6 +123,7 @@ async function seed() {
         },
       ],
     });
+
     const trainingTest = await prisma.training.create({
       data: {
         name: "Peito & triceps",
