@@ -10,7 +10,7 @@ export function Input({ label, id, className, children, ...rest }: Props) {
     <fieldset className="w-full">
       <div className="flex justify-between mb-1.5">
         <label
-          className="uppercase text-muted-foreground text-[12px]"
+          className="uppercase text-muted-foreground text-[12px] "
           htmlFor={id}
         >
           {label}
@@ -21,7 +21,7 @@ export function Input({ label, id, className, children, ...rest }: Props) {
         type="text"
         id={id}
         className={twMerge(
-          `w-full bg-secondary py-3 px-11 rounded-xl border-2 border-[#2E2E32] text-white focus:outline-0 focus:border-accent hover:border-accent`,
+          `w-full bg-secondary py-3 px-11 rounded-xl border-2 border-[#2E2E32] text-white focus:outline-0 focus:border-accent hover:border-accent placeholder:text-[#3F3F47]`,
           className,
         )}
         {...rest}

@@ -8,6 +8,7 @@ import { Agenda } from "../pages/Agenda";
 import { Conquest } from "../pages/Conquest";
 import { Menu } from "../components/Menu";
 import { NotFound } from "../pages/NotFound";
+import { NewTraining } from "../pages/NewTraining";
 
 export function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export function AppRoutes() {
       <Route path="/" element={<Menu />}>
         <Route path="/" index element={<Dashboard />} />
         <Route path="/Treinos" element={<Training />} />
+        <Route path="/Novo-treino" element={<NewTraining />} />
         <Route path="/Agenda" element={<Agenda />} />
         <Route path="/Progresso" element={<Progress />} />
         <Route path="/Conquistas" element={<Conquest />} />

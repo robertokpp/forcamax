@@ -17,6 +17,7 @@ class ExercisesController {
     });
 
     const exercises = exercisesTraining.map((exercise) => ({
+      id:exercise.id,
       set: exercise.sets,
       repetitions: exercise.repetitions,
       weight: exercise.weight,

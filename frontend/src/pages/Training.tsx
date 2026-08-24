@@ -4,6 +4,7 @@ import { api } from "../services/api";
 import { IconHeart, IconPlus } from "../components/Icons";
 import { Card } from "../components/Card";
 import { CardExercise } from "../components/CardExercise";
+import { useNavigate } from "react-router";
 
 interface Training {
   id: string;
@@ -12,6 +13,7 @@ interface Training {
 }
 
 interface Exercises {
+  id: string;
   name: string;
   muscleGroup: string;
   interval: string;
@@ -24,6 +26,7 @@ export function Training() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [exercises, setExercises] = useState<Exercises[]>([]);
   const [openCard, setOpenCard] = useState(null);
+  const navigate = useNavigate();
 
   async function fetchTraining() {
     const response = await api.get("/training");
@@ -71,7 +74,11 @@ export function Training() {
               </small>
             )}
           </div>
-          <Button title="Novo treino" className="w-fit">
+          <Button
+            title="Novo treino"
+            className="w-fit"
+            onClick={() => navigate("/Novo-treino")}
+          >
             <IconPlus />
           </Button>
         </div>
@@ -96,7 +103,16 @@ export function Training() {
 
       <section className="p-4 flex flex-col gap-2">
         {exercises.map((exercise, index) => (
-          <CardExercise index={index} name={exercise.name}></CardExercise>
+          <CardExercise
+            key={exercise.id}
+            index={index}
+            name={exercise.name}
+            muscleGroup={exercise.muscleGroup}
+            set={exercise.set}
+            repetitions={exercise.repetitions}
+            interval={exercise.interval}
+            weight={exercise.weight}
+          ></CardExercise>
         ))}
       </section>
     </div>

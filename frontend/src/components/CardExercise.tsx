@@ -1,9 +1,22 @@
 type Props = {
   index: number;
   name: string;
+  set: string;
+  repetitions: string;
+  weight: string;
+  interval: string;
+  muscleGroup: string;
 };
 
-export function CardExercise({ index, name }: Props) {
+export function CardExercise({
+  index,
+  name,
+  muscleGroup,
+  set,
+  repetitions,
+  weight,
+  interval,
+}: Props) {
   return (
     <div className="w-full border border-[#252526] bg-card rounded-xl p-3 flex items-center gap-4">
       <div className="w-8 h-8 bg-accent/10 flex justify-center items-center rounded-lg">
@@ -13,14 +26,14 @@ export function CardExercise({ index, name }: Props) {
       <div className="flex justify-between items-center w-full text-white">
         <div className="flex flex-col">
           <span>{name}</span>
-          <small>Peitoral</small>
+          <small>{`${muscleGroup}`}</small>
         </div>
         <div className="flex gap-4">
           <div>
-            <span>4x8–10</span>
+            <span>{`${set}X${repetitions}`}</span>
           </div>
-          <span>80kg</span>
-          <span>/90s</span>
+          <span>{weight}</span>
+          <span>{`/${interval}`}</span>
         </div>
       </div>
     </div>
