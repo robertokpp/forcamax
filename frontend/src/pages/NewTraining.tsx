@@ -1,6 +1,6 @@
 import { Button } from "../components/Button";
 import { IconHeart } from "../components/Icons";
-import { Input } from "../components/Input";
+import { Input, Textarea } from "../components/Input";
 
 export function NewTraining() {
   return (
@@ -70,6 +70,44 @@ export function NewTraining() {
               Avançado
             </label>
           </div>
+        </div>
+
+        <Textarea
+          id="description"
+          label="Descrição"
+          placeholder="Descreva o foco e objetivos deste treino..."
+        >
+          <label htmlFor="">
+            <small className="text-muted-foreground">(opcional)</small>
+          </label>
+        </Textarea>
+
+        <div>
+          <label
+            htmlFor="Peitoral"
+            className="border-2 border-[#252526] px-3 py-1.5 rounded-lg bg-card text-muted-foreground"
+          >
+            Peitoral
+          </label>
+          <input type="checkbox" id="Peitoral" />
+        </div>
+      </section>
+
+      <section className="p-4">
+        <header className="text-white">
+          <h2 className="font-bold">MONTAR TREINO</h2>
+          <small>0 exercícios adicionados</small>
+        </header>
+
+        <Input
+          id="buscarTreino"
+          placeholder="Buscar exercício por nome ou músculo..."
+          className="px-3 mb-2.5"
+        ></Input>
+
+        <div className="border-2 border-dashed border-[#252526] w-full p-4">
+          <p>Nenhum exercício ainda</p>
+          <p>Busque acima para adicionar exercício ao plano</p>
         </div>
       </section>
     </>
