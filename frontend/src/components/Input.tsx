@@ -10,6 +10,13 @@ type InputTextarea = React.ComponentProps<"textarea"> & {
   id: string;
 };
 
+type InputSelect = React.ComponentProps<"select"> & {
+  name: string;
+  id: string;
+};
+
+type InputOption = React.ComponentProps<"option">;
+
 export function Input({ label, id, className, children, ...rest }: Props) {
   return (
     <fieldset className="w-full">
@@ -64,5 +71,42 @@ export function Textarea({
         {...rest}
       />
     </fieldset>
+  );
+}
+
+export function Select({
+  name,
+  id,
+  className,
+  children,
+  ...rest
+}: InputSelect) {
+  return (
+    <select
+      name={name}
+      id={id}
+      className={twMerge(
+        `w-full bg-secondary py-3 px-11 rounded-xl border-2 border-[#2E2E32] text-white focus:outline-0 focus:border-accent hover:border-accent placeholder:text-[#3F3F47]`,
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </select>
+  );
+}
+
+export function Option({ children, className, value, ...rest  }: InputOption) {
+  return (
+    <option
+      value={value}
+      className={twMerge(
+        `w-full bg-secondary py-3 px-11 rounded-xl border-2 border-[#2E2E32] text-white focus:outline-0 focus:border-accent hover:border-accent placeholder:text-[#3F3F47]`,
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </option>
   );
 }

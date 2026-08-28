@@ -1,8 +1,28 @@
-import { Button } from "../components/Button";
-import { IconHeart } from "../components/Icons";
-import { Input, Textarea } from "../components/Input";
+import { useEffect, useState } from "react";
+import { IconHeart, IconDumbbell } from "../components/Icons";
+import { Input, Select, Textarea } from "../components/Input";
+import { api } from "../services/api";
+
+interface Exercise {
+  id: string;
+  name: string;
+  description: string;
+  equipment: string;
+  muscleGroup: string;
+}
 
 export function NewTraining() {
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+
+  async function fetchExercises() {
+    const response = await api.get("/exercises");
+    setExercises(response.data);
+    console.log(response.data);
+  }
+
+  useEffect(() => {
+    fetchExercises();
+  }, []);
   return (
     <>
       <header className="text-white pl-20 pr-4 py-2 border-b flex justify-between items-center">
@@ -96,7 +116,9 @@ export function NewTraining() {
       <section className="p-4">
         <header className="text-white">
           <h2 className="font-bold">MONTAR TREINO</h2>
-          <small>0 exercícios adicionados</small>
+          <small className="text-muted-foreground">
+            0 exercícios adicionados
+          </small>
         </header>
 
         <Input
@@ -105,9 +127,18 @@ export function NewTraining() {
           className="px-3 mb-2.5"
         ></Input>
 
-        <div className="border-2 border-dashed border-[#252526] w-full p-4">
-          <p>Nenhum exercício ainda</p>
-          <p>Busque acima para adicionar exercício ao plano</p>
+        <Select id="exercise" name="exercise">
+          {exercises.map((exercise) => (
+            <Option value={exercise.id} >{exercise.name}</Option>
+          ))}
+        </Select>
+
+        <div className="border-2 border-dashed border-[#252526] w-full p-10 flex flex-col justify-center items-center rounded-2xl">
+          <IconDumbbell width="48" height="48" color="#28282E"></IconDumbbell>
+          <p className="text-muted-foreground">Nenhum exercício ainda</p>
+          <p className="text-[#28282E] text-center">
+            Busque acima para adicionar exercício ao plano
+          </p>
         </div>
       </section>
     </>

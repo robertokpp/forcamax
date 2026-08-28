@@ -5,5 +5,5 @@ const exercisesRouter = Router();
 const exercisesController = new ExercisesController();
 
 exercisesRouter.get("/:trainingId", exercisesController.index);
-
+exercisesRouter.get("/", exercisesController.indexExercises);
 export { exercisesRouter };

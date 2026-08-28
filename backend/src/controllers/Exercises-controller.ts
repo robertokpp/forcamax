@@ -17,7 +17,7 @@ class ExercisesController {
     });
 
     const exercises = exercisesTraining.map((exercise) => ({
-      id:exercise.id,
+      id: exercise.id,
       set: exercise.sets,
       repetitions: exercise.repetitions,
       weight: exercise.weight,
@@ -25,6 +25,12 @@ class ExercisesController {
       name: exercise.exercise.name,
       muscleGroup: exercise.exercise.muscleGroup,
     }));
+
+    return response.json(exercises);
+  }
+
+  async indexExercises(request: Request, response: Response) {
+    const exercises = await prisma.exercise.findMany({});
 
     return response.json(exercises);
   }
