@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IconHeart, IconDumbbell } from "../components/Icons";
 import { Input, Select, Textarea } from "../components/Input";
 import { api } from "../services/api";
+import { Dropdown } from "../components/Dropdown";
 
 interface Exercise {
   id: string;
@@ -121,19 +122,9 @@ export function NewTraining() {
           </small>
         </header>
 
-        <Input
-          id="buscarTreino"
-          placeholder="Buscar exercício por nome ou músculo..."
-          className="px-3 mb-2.5"
-        ></Input>
+        <Dropdown></Dropdown>
 
-        <Select id="exercise" name="exercise">
-          {exercises.map((exercise) => (
-            <Option value={exercise.id} >{exercise.name}</Option>
-          ))}
-        </Select>
-
-        <div className="border-2 border-dashed border-[#252526] w-full p-10 flex flex-col justify-center items-center rounded-2xl">
+        <div className="border-2 border-dashed border-[#252526] w-full p-10 flex flex-col justify-center items-center rounded-2xl mt-8">
           <IconDumbbell width="48" height="48" color="#28282E"></IconDumbbell>
           <p className="text-muted-foreground">Nenhum exercício ainda</p>
           <p className="text-[#28282E] text-center">
