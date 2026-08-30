@@ -163,12 +163,10 @@ export function NewTraining() {
               0 exercícios adicionados
             </small>
           </header>
-
-
         </section>
       )}
 
-      <div className="bg-card w-full flex justify-between px-6 py-4 fixed bottom-0 left-0 z-50">
+      <div className="bg-card w-full flex justify-between px-6 py-4 fixed bottom-0 left-0 z-5">
         <div>
           <Button
             variant="ghost"
@@ -197,6 +195,8 @@ export function NewTraining() {
           )}
         </div>
       </div>
+
+
     </>
   );
 }

@@ -2,7 +2,7 @@ import { rateLimit } from "express-rate-limit";
 
 const sessionRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 5,
+  limit: 100,
 
   standardHeaders: "draft-8",
   legacyHeaders: false,
@@ -18,7 +18,7 @@ const sessionRateLimit = rateLimit({
 
 const userCreationRateLimit = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 3,
+  limit: 100,
 
   standardHeaders: "draft-8",
   legacyHeaders: false,
