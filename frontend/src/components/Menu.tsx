@@ -28,6 +28,7 @@ export function Menu() {
             : "-translate-x-full pointer-events-none"
         }`}
       >
+
         <div className="bg-sidebar w-fit min-h-screen p-4 flex-col flex shadow-xl">
           <aside className="p-4 flex items-center justify-between gap-8">
             <HeaderLogo />
@@ -78,7 +79,7 @@ export function Menu() {
             aria-label="Abrir menu"
             title="Abrir menu"
             onClick={() => setIsOpenMenu(true)}
-            className="fixed top-4 left-4 z-10 flex h-11 w-11 items-center justify-center rounded-xl bg-sidebar text-2xl text-white shadow-lg hover:bg-white/10 cursor-pointer"
+            className="fixed top-1 left-2 z-10 flex h-11 w-11 items-center justify-center rounded-xl bg-sidebar text-2xl text-white shadow-lg hover:bg-white/10 cursor-pointer"
           >
             &#9776;
           </button>

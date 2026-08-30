@@ -179,3 +179,75 @@ export function IconSearch({
     </svg>
   );
 }
+
+export function IconChevronLeft({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12.5 15L7.5 10L12.5 5"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconChevronRight({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.5 15L12.5 10L7.5 5"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconCheck({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M16.6667 5L7.50004 14.1667L3.33337 10"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
