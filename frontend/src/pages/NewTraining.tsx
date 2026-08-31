@@ -5,8 +5,9 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconCheck,
+  IconPlus,
 } from "../components/Icons";
-import { Input, Select, Textarea } from "../components/Input";
+import { Input, Textarea, InputDifficulty } from "../components/Input";
 import { api } from "../services/api";
 import { Dropdown, DropdownList } from "../components/Dropdown";
 import { Button } from "../components/Button";
@@ -20,14 +21,18 @@ interface Exercise {
 }
 
 export function NewTraining() {
-  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
+  const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 3;
 
   async function fetchExercises() {
     const response = await api.get("/exercises");
-    setExercises(response.data);
-    console.log(response.data);
+    setAvailableExercises(response.data);
+  }
+
+  function include(item: any) {
+    console.log(item);
   }
 
   useEffect(() => {
@@ -57,52 +62,21 @@ export function NewTraining() {
             className="px-3"
           ></Input>
 
-          <div className="flex justify-between">
-            <div>
-              <input
-                id="Iniciante"
-                type="radio"
-                name="difficulty"
-                className="peer appearance-none"
-              ></input>
-              <label
-                htmlFor="Iniciante"
-                className="p-3 bg-[#32d399]/10 peer-checked:bg-accent"
-              >
-                Iniciante
-              </label>
-            </div>
-
-            <div>
-              <input
-                id="Intermediário"
-                type="radio"
-                name="difficulty"
-                className="peer appearance-none"
-              ></input>
-              <label
-                className="w-full p-3 bg-card border border-[#252526] rounded-xl text-muted-foreground peer-checked:border-[#cd7f32] peer-checked:bg-[#cd7f32]/10 peer-checked:text-[#cd7f32]"
-                htmlFor="Intermediário"
-              >
-                Intermediário
-              </label>
-            </div>
-
-            <div>
-              <input
-                id="Avançado"
-                type="radio"
-                name="difficulty"
-                className="peer appearance-none"
-              ></input>
-              <label
-                htmlFor="Avançado"
-                className="p-3 bg-[#cd7f32] peer-checked:bg-accent"
-              >
-                Avançado
-              </label>
-            </div>
-          </div>
+          <ul className="flex gap-2">
+            <InputDifficulty variant="beginner" name="difficulty" id="beginner">
+              Iniciante
+            </InputDifficulty>
+            <InputDifficulty
+              variant="intermediary"
+              name="difficulty"
+              id="intermediary"
+            >
+              Intermediário
+            </InputDifficulty>
+            <InputDifficulty variant="advanced" name="difficulty" id="advanced">
+              Avançado
+            </InputDifficulty>
+          </ul>
 
           <Textarea
             id="description"
@@ -136,12 +110,21 @@ export function NewTraining() {
           </header>
 
           <Dropdown>
-            {exercises.map((exercise) => (
-              <DropdownList
-                key={exercise.id}
-                name={exercise.name}
-                muscleGroup={exercise.muscleGroup}
-              ></DropdownList>
+            {availableExercises.map((exercise) => (
+              <li
+                className="px-4 py-3 flex gap-3 items-center bg-card border-b border-[#252526]"
+                onClick={() => include(exercise)}
+              > 
+                <div className="bg-accent/10 w-fit h-fit p-2 rounded-lg">
+                  <IconPlus color="#C8F135"></IconPlus>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[#F0F0F2]">{exercise.name}</span>
+                  <small className="text-muted-foreground">
+                    {exercise.muscleGroup}
+                  </small>
+                </div>
+              </li>
             ))}
           </Dropdown>
 
@@ -181,7 +164,8 @@ export function NewTraining() {
           {currentPage === totalPages ? (
             <Button>
               <IconCheck />
-              Salvar Plano</Button>
+              Salvar Plano
+            </Button>
           ) : (
             <Button
               disabled={currentPage === totalPages}
@@ -195,8 +179,6 @@ export function NewTraining() {
           )}
         </div>
       </div>
-
-
     </>
   );
 }

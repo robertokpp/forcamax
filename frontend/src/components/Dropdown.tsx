@@ -16,8 +16,7 @@ export function Dropdown({ children }: Props) {
         </label>
         <input
           id="InputDropDown"
-          onFocus={() => setOpen(true)}
-          onBlur={() => setOpen(false)}
+          onClick={() => setOpen(true)}
           placeholder="Buscar exercício por nome ou músculo..."
           className="p-11 w-full h-full absolute placeholder:text-[14px] placeholder:text-[#3F3F47] focus:outline-0"
         ></input>
@@ -32,14 +31,14 @@ export function Dropdown({ children }: Props) {
   );
 }
 
-type PropsList = {
+type PropsList ={
   name: string;
   muscleGroup: string;
 };
 
-export function DropdownList({ name, muscleGroup }: PropsList) {
+export function DropdownList({ name, muscleGroup}: PropsList) {
   return (
-    <li className="px-4 py-3 flex gap-3 items-center bg-card border-b border-[#252526] ">
+    <li className="px-4 py-3 flex gap-3 items-center bg-card border-b border-[#252526]">
       <div className="bg-accent/10 w-fit h-fit p-2 rounded-lg">
         <IconPlus color="#C8F135"></IconPlus>
       </div>

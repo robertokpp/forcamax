@@ -96,7 +96,7 @@ export function Select({
   );
 }
 
-export function Option({ children, className, value, ...rest  }: InputOption) {
+export function Option({ children, className, value, ...rest }: InputOption) {
   return (
     <option
       value={value}
@@ -108,5 +108,41 @@ export function Option({ children, className, value, ...rest  }: InputOption) {
     >
       {children}
     </option>
+  );
+}
+
+type PropsDifficulty = React.ComponentProps<"input"> & {
+  name: string;
+  id: string;
+  variant: keyof typeof variants;
+};
+
+const variants = {
+  beginner:
+    "peer-checked:border-[#00D492] peer-checked:bg-[#00D492]/10 peer-checked:text-[#00D492]",
+  intermediary:
+    "peer-checked:border-[#FFB900] peer-checked:bg-[#FFB900]/10 peer-checked:text-[#FFB900]",
+  advanced:
+    "peer-checked:border-[#FF6467] peer-checked:bg-[#FF6467]/10 peer-checked:text-[#FF6467]",
+};
+
+export function InputDifficulty({
+  name,
+  id,
+  children,
+  variant,
+}: PropsDifficulty) {
+  const variantColor = variants[variant];
+
+  return (
+    <li className="flex-1">
+      <input id={id} type="radio" name={name} className="peer sr-only"></input>
+      <label
+        className={`block w-full p-3 bg-card border border-[#252526] rounded-xl text-muted-foreground ${variantColor}`}
+        htmlFor={id}
+      >
+        {children}
+      </label>
+    </li>
   );
 }
