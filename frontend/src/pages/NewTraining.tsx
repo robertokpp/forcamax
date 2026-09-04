@@ -21,15 +21,17 @@ interface Exercise {
   muscleGroup: string;
 }
 
+type difficulty = "beginner" | "intermediary" | "advanced";
+
 export function NewTraining() {
   const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
   const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 3;
-  
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [difficulty, setDifficulty] = useState("");
+  const [difficulty, setDifficulty] = useState<difficulty>();
 
   async function fetchExercises() {
     const response = await api.get("/exercises");
@@ -53,6 +55,10 @@ export function NewTraining() {
   useEffect(() => {
     fetchExercises();
   }, []);
+
+  useEffect(() => {
+    console.log(difficulty);
+  }, [difficulty]);
 
   return (
     <>
@@ -80,17 +86,34 @@ export function NewTraining() {
           ></Input>
 
           <ul className="flex gap-2">
-            <InputDifficulty variant="beginner" name="difficulty" id="beginner">
+            <InputDifficulty
+              variant="beginner"
+              name="difficulty"
+              id="beginner"
+              value="beginner"
+              checked={difficulty === "beginner"}
+              onChange={(e) => setDifficulty(e.target.value as difficulty)}
+            >
               Iniciante
             </InputDifficulty>
             <InputDifficulty
               variant="intermediary"
               name="difficulty"
               id="intermediary"
+              value={"intermediary"}
+              checked={difficulty === "intermediary"}
+              onChange={(e) => setDifficulty(e.target.value as difficulty)}
             >
               Intermediário
             </InputDifficulty>
-            <InputDifficulty variant="advanced" name="difficulty" id="advanced">
+            <InputDifficulty
+              variant="advanced"
+              name="difficulty"
+              id="advanced"
+              value={"advanced"}
+              checked={difficulty === "advanced"}
+              onChange={(e) => setDifficulty(e.target.value as difficulty)}
+            >
               Avançado
             </InputDifficulty>
           </ul>
