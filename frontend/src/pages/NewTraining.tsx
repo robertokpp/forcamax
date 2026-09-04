@@ -6,10 +6,11 @@ import {
   IconChevronRight,
   IconCheck,
   IconPlus,
+  IconTrash,
 } from "../components/Icons";
 import { Input, Textarea, InputDifficulty } from "../components/Input";
 import { api } from "../services/api";
-import { Dropdown, DropdownList } from "../components/Dropdown";
+import { Dropdown } from "../components/Dropdown";
 import { Button } from "../components/Button";
 
 interface Exercise {
@@ -25,14 +26,28 @@ export function NewTraining() {
   const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 3;
+  
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [difficulty, setDifficulty] = useState("");
 
   async function fetchExercises() {
     const response = await api.get("/exercises");
     setAvailableExercises(response.data);
   }
 
-  function include(item: any) {
-    console.log(item);
+  function include(item: Exercise) {
+    setAvailableExercises((exercises) =>
+      exercises.filter((exercise) => exercise.id !== item.id),
+    );
+    setSelectedExercises((exercises) => [...exercises, item]);
+  }
+
+  function remove(item: Exercise) {
+    setSelectedExercises((exercises) =>
+      exercises.filter((exercise) => exercise.id !== item.id),
+    );
+    setAvailableExercises((exercises) => [...exercises, item]);
   }
 
   useEffect(() => {
@@ -59,6 +74,8 @@ export function NewTraining() {
             label="Nome do Plano *"
             required
             placeholder="Ex: Peito & Tríceps — Hipertrofia"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="px-3"
           ></Input>
 
@@ -105,16 +122,17 @@ export function NewTraining() {
           <header className="text-white">
             <h2 className="font-bold">MONTAR TREINO</h2>
             <small className="text-muted-foreground">
-              0 exercícios adicionados
+              {selectedExercises.length} exercício(s) adicionado(s)
             </small>
           </header>
 
           <Dropdown>
             {availableExercises.map((exercise) => (
               <li
+                key={exercise.id}
                 className="px-4 py-3 flex gap-3 items-center bg-card border-b border-[#252526]"
                 onClick={() => include(exercise)}
-              > 
+              >
                 <div className="bg-accent/10 w-fit h-fit p-2 rounded-lg">
                   <IconPlus color="#C8F135"></IconPlus>
                 </div>
@@ -128,13 +146,44 @@ export function NewTraining() {
             ))}
           </Dropdown>
 
-          <div className="border-2 border-dashed border-[#252526] w-full p-10 flex flex-col justify-center items-center rounded-2xl mt-8">
-            <IconDumbbell width="48" height="48" color="#28282E"></IconDumbbell>
-            <p className="text-muted-foreground">Nenhum exercício ainda</p>
-            <p className="text-[#28282E] text-center">
-              Busque acima para adicionar exercício ao plano
-            </p>
-          </div>
+          {selectedExercises.length === 0 ? (
+            <div className="border-2 border-dashed border-[#252526] w-full p-10 flex flex-col justify-center items-center rounded-2xl mt-8">
+              <IconDumbbell
+                width="48"
+                height="48"
+                color="#28282E"
+              ></IconDumbbell>
+              <p className="text-muted-foreground">Nenhum exercício ainda</p>
+              <p className="text-[#28282E] text-center">
+                Busque acima para adicionar exercício ao plano
+              </p>
+            </div>
+          ) : (
+            <ul className="mt-8 overflow-hidden rounded-2xl border border-[#252526]">
+              {selectedExercises.map((exercise) => (
+                <li
+                  key={exercise.id}
+                  className="flex items-center gap-3 border-b border-[#252526] bg-card px-4 py-3 last:border-b-0"
+                >
+                  <div className="h-fit w-fit rounded-lg bg-accent/10 p-2">
+                    <IconDumbbell color="#C8F135" />
+                  </div>
+                  <div className="w-full flex justify-between items-center">
+                    <div className="flex flex-col ">
+                      <span className="text-[#F0F0F2]">{exercise.name}</span>
+                      <small className="text-muted-foreground">
+                        {exercise.muscleGroup}
+                      </small>
+                    </div>
+
+                    <button onClick={() => remove(exercise)}>
+                      <IconTrash color="#4C4C55"></IconTrash>
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
 
@@ -168,7 +217,10 @@ export function NewTraining() {
             </Button>
           ) : (
             <Button
-              disabled={currentPage === totalPages}
+              disabled={
+                (currentPage === 1 && name.length < 3) ||
+                (currentPage === 2 && selectedExercises.length === 0)
+              }
               onClick={() =>
                 setCurrentPage((page) => Math.min(page + 1, totalPages))
               }

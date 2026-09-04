@@ -1,5 +1,5 @@
 import { IconPlus, IconSearch } from "./Icons";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
   isOpen?: () => boolean;
@@ -8,15 +8,34 @@ type Props = {
 
 export function Dropdown({ children }: Props) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function closeOnClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", closeOnClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", closeOnClickOutside);
+    };
+  }, []);
+
   return (
-    <>
+    <div ref={dropdownRef}>
       <div className="w-full bg-secondary py-3 rounded-xl border-2 border-[#2E2E32] text-white focus:border-accent hover:border-accent  relative flex items-center overflow-hidden">
         <label htmlFor="InputDropDown" className="px-4">
           <IconSearch color="#3F3F47"></IconSearch>
         </label>
         <input
           id="InputDropDown"
-          onClick={() => setOpen(true)}
+          onFocus={() => setOpen(true)}
           placeholder="Buscar exercício por nome ou músculo..."
           className="p-11 w-full h-full absolute placeholder:text-[14px] placeholder:text-[#3F3F47] focus:outline-0"
         ></input>
@@ -27,7 +46,7 @@ export function Dropdown({ children }: Props) {
       >
         <ul className="h-64 overflow-auto">{children}</ul>
       </div>
-    </>
+    </div>
   );
 }
 

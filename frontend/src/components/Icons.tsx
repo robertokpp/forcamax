@@ -251,3 +251,55 @@ export function IconCheck({
     </svg>
   );
 }
+
+export function IconTrash({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M2.5 5H17.5"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M15.8332 5V16.6667C15.8332 17.5 14.9998 18.3333 14.1665 18.3333H5.83317C4.99984 18.3333 4.1665 17.5 4.1665 16.6667V5"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M6.6665 4.99999V3.33332C6.6665 2.49999 7.49984 1.66666 8.33317 1.66666H11.6665C12.4998 1.66666 13.3332 2.49999 13.3332 3.33332V4.99999"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8.3335 9.16666V14.1667"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M11.6665 9.16666V14.1667"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
