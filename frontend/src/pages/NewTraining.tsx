@@ -32,9 +32,14 @@ export function NewTraining() {
   const totalPages = 3;
 
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [difficulty, setDifficulty] = useState<difficulty>("intermediary");
   const [tags, setTags] = useState<tags>("push");
+  const [difficulty, setDifficulty] = useState<difficulty>("intermediary");
+  const [description, setDescription] = useState("");
+
+  const [sets, setSets] = useState("3");
+  const [repetitions, setRepetitions] = useState("10-12");
+  const [weight, setWeight] = useState("");
+  const [interval, setInterval] = useState("60s");
 
   async function fetchExercises() {
     const response = await api.get("/exercises");
@@ -58,10 +63,6 @@ export function NewTraining() {
   useEffect(() => {
     fetchExercises();
   }, []);
-
-  useEffect(() => {
-    console.log(difficulty);
-  }, [difficulty]);
 
   return (
     <>
@@ -190,14 +191,17 @@ export function NewTraining() {
             </label>
           </Textarea>
 
-          <div>
-            <label
-              htmlFor="Peitoral"
-              className="border-2 border-[#252526] px-3 py-1.5 rounded-lg bg-card text-muted-foreground"
-            >
-              Peitoral
-            </label>
-            <input type="checkbox" id="Peitoral" />
+          <div className="flex flex-wrap">
+            <div>
+              <input checked={true} type="checkbox" id="Peitoral" className="peer" />
+              <label
+                htmlFor="Peitoral"
+                className="border-2 border-[#252526] px-3 py-1.5 rounded-lg bg-card text-muted-foreground peer-checked:bg-accent/10 peer-checked:text-accent peer-checked:border-accent"
+              >
+                Peitoral
+              </label>
+            </div>
+           
           </div>
         </section>
       )}
@@ -276,15 +280,22 @@ export function NewTraining() {
                       <p className="uppercase text-muted-foreground mb-3">
                         Séries
                       </p>
-                      <input className="uppercase text-white" value="3"></input>
+                      <input
+                        className="uppercase text-white w-full outline-0"
+                        placeholder="3"
+                        value={sets}
+                        onChange={(e) => setSets(e.target.value)}
+                      ></input>
                     </div>
                     <div className="p-3 flex-1 border-t border-[#2E2E32]">
                       <p className="uppercase text-muted-foreground mb-3 ">
                         Reps
                       </p>
                       <input
-                        className="uppercase text-white"
-                        value="10-12"
+                        className="uppercase text-white w-full outline-0"
+                        placeholder="10-12"
+                        value={repetitions}
+                        onChange={(e) => setRepetitions(e.target.value)}
                       ></input>
                     </div>
                   </div>
@@ -294,8 +305,10 @@ export function NewTraining() {
                         Carga
                       </p>
                       <input
-                        className="uppercase text-white"
+                        className="uppercase text-white w-full outline-0"
                         placeholder="60KG"
+                        value={weight}
+                        onChange={(e) => setWeight(e.target.value)}
                       ></input>
                     </div>
                     <div className="p-3 flex-1 border-t border-[#2E2E32]">
@@ -303,8 +316,10 @@ export function NewTraining() {
                         Descanso
                       </p>
                       <input
-                        className="uppercase text-white"
-                        value="60s"
+                        className="uppercase text-white w-full outline-0"
+                        placeholder="60s"
+                        value={interval}
+                        onChange={(e) => setInterval(e.target.value)}
                       ></input>
                     </div>
                   </div>
@@ -326,7 +341,6 @@ export function NewTraining() {
 
           <div className=" bg-card rounded-2xl mt-10 border border-muted-foreground overflow-hidden ">
             <div className="p-6">
-
               <div className="w-fit flex gap-2">
                 <Tags
                   variant={tags}
