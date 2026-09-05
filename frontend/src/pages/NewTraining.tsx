@@ -300,7 +300,7 @@ export function NewTraining() {
                     </div>
                     <div className="p-3 flex-1 border-t border-[#2E2E32]">
                       <p className="uppercase text-muted-foreground mb-3 ">
-                        Reps
+                        Descanso
                       </p>
                       <input
                         className="uppercase text-white"
@@ -326,6 +326,7 @@ export function NewTraining() {
 
           <div className=" bg-card rounded-2xl mt-10 border border-muted-foreground overflow-hidden ">
             <div className="p-6">
+
               <div className="w-fit flex gap-2">
                 <Tags
                   variant={tags}
@@ -350,6 +351,7 @@ export function NewTraining() {
                   Iniciante
                 </InputDifficulty>
               </div>
+
               <div className="pt-3">
                 <p className="font-bold text-[24px] text-white">{name}</p>
                 <p className=" pt-3 text-[14px] text-muted-foreground">
