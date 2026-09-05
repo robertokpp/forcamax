@@ -131,21 +131,25 @@ export function InputDifficulty({
   id,
   children,
   variant,
+  className,
   ...rest
 }: PropsDifficulty) {
   const variantColor = variants[variant];
 
   return (
-    <li className="flex-1">
+    <li className="flex-1 list-none">
       <input
         {...rest}
         id={id}
         type="radio"
         name={name}
-        className="peer sr-only"
+        className="peer sr-only "
       ></input>
       <label
-        className={`block w-full p-3 bg-card border border-[#252526] rounded-xl text-muted-foreground ${variantColor}`}
+        className={twMerge(
+          `block w-full p-3 bg-card border border-[#252526] rounded-xl text-muted-foreground ${variantColor} `,
+          className,
+        )}
         htmlFor={id}
       >
         {children}

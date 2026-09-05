@@ -88,7 +88,7 @@ export function NewTraining() {
             className="px-3"
           ></Input>
 
-          <ul className="flex justify-between gap-2 flex-wrap">
+          <div className="flex justify-between gap-2 flex-wrap">
             <Tags
               variant="push"
               label="push"
@@ -143,7 +143,7 @@ export function NewTraining() {
               checked={tags === "hit"}
               onChange={(e) => setTags(e.target.value as tags)}
             ></Tags>
-          </ul>
+          </div>
 
           <ul className="flex gap-2 flex-wrap">
             <InputDifficulty
@@ -182,6 +182,8 @@ export function NewTraining() {
             id="description"
             label="Descrição"
             placeholder="Descreva o foco e objetivos deste treino..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           >
             <label htmlFor="">
               <small className="text-muted-foreground">(opcional)</small>
@@ -242,7 +244,7 @@ export function NewTraining() {
               </p>
             </div>
           ) : (
-            <ul className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-4 mt-10">
               {selectedExercises.map((exercise) => (
                 <li
                   key={exercise.id}
@@ -316,11 +318,78 @@ export function NewTraining() {
       {currentPage === 3 && (
         <section className="p-4 pb-24">
           <header className="text-white">
-            <h2 className="font-bold">MONTAR TREINO</h2>
+            <h2 className="font-bold uppercase">REVISAR PLANO</h2>
             <small className="text-muted-foreground">
-              0 exercícios adicionados
+              Confira os detalhes antes de salvar
             </small>
           </header>
+
+          <div className=" bg-card rounded-2xl mt-10 border border-muted-foreground overflow-hidden ">
+            <div className="p-6">
+              <div className="w-fit flex gap-2">
+                <Tags
+                  variant={tags}
+                  label={tags}
+                  id={tags}
+                  name={tags}
+                  value={tags}
+                  checked={tags === tags}
+                  onChange={(e) => setTags(e.target.value as tags)}
+                  className="px-2 py-0.5"
+                ></Tags>
+
+                <InputDifficulty
+                  variant={difficulty}
+                  name={difficulty}
+                  id={difficulty}
+                  value={difficulty}
+                  checked={difficulty === difficulty}
+                  onChange={(e) => setDifficulty(e.target.value as difficulty)}
+                  className="px-2 py-0.5"
+                >
+                  Iniciante
+                </InputDifficulty>
+              </div>
+              <div className="pt-3">
+                <p className="font-bold text-[24px] text-white">{name}</p>
+                <p className=" pt-3 text-[14px] text-muted-foreground">
+                  {description}
+                </p>
+              </div>
+            </div>
+            <div className="flex w-full items-center">
+              <div className="flex-1">
+                <div className="flex flex-col justify-center items-center border-t border-b border-muted-foreground p-4">
+                  <p>{selectedExercises.length}</p>
+                  <p>
+                    {selectedExercises.length === 1
+                      ? "Exercício"
+                      : "Exercícios"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col justify-center items-center border border-muted-foreground p-4">
+                  <p>{selectedExercises.length}</p>
+                  <p>
+                    {selectedExercises.length === 1
+                      ? "Exercício"
+                      : "Exercícios"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col justify-center items-center border-t border-b border-muted-foreground p-4">
+                  <p>{selectedExercises.length}</p>
+                  <p>
+                    {selectedExercises.length === 1
+                      ? "Exercício"
+                      : "Exercícios"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       )}
 

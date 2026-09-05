@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 type Props = React.ComponentProps<"input"> & {
   id: string;
   name: string;
@@ -14,10 +16,10 @@ const variants = {
   hit: "peer-checked:border-[#F43F5E] peer-checked:bg-[#F43F5E]/10 peer-checked:text-[#F43F5E]",
 };
 
-export function Tags({ id, name, label, variant, ...rest }: Props) {
+export function Tags({ id, name, label, variant, className, ...rest }: Props) {
   const variantColor = variants[variant];
   return (
-    <li className="flex-1">
+    <div className="flex-1">
       <input
         className="peer sr-only"
         {...rest}
@@ -26,11 +28,14 @@ export function Tags({ id, name, label, variant, ...rest }: Props) {
         name={name}
       />
       <label
-        className={`block w-full px-2.5 py-1 bg-card border border-[#252526] rounded-xl text-muted-foreground uppercase text-center ${variantColor}`}
+        className={twMerge(
+          `block w-full px-2.5 py-1 bg-card border border-[#252526] rounded-xl text-muted-foreground uppercase text-center ${variantColor}`,
+          className,
+        )}
         htmlFor={id}
       >
         {label}
       </label>
-    </li>
+    </div>
   );
 }
