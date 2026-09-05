@@ -18,6 +18,15 @@ enum Difficulty {
   advanced
 }
 
+enum tag {
+  push
+  pull
+  legs
+  full
+  core
+  hit
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
@@ -37,6 +46,8 @@ model Exercise {
   description String
   muscleGroup String
   equipment   String?
+  
+
 
   training Training[]
   trainingExercises TrainingExercise[]
@@ -52,6 +63,7 @@ model Training {
   name        String
   description String?
   difficulty  Difficulty
+  
 
   userId String
   user   User   @relation(fields: [userId], references: [id])

@@ -12,6 +12,7 @@ import { Input, Textarea, InputDifficulty } from "../components/Input";
 import { api } from "../services/api";
 import { Dropdown } from "../components/Dropdown";
 import { Button } from "../components/Button";
+import { Tags } from "../components/Tags";
 
 interface Exercise {
   id: string;
@@ -22,6 +23,7 @@ interface Exercise {
 }
 
 type difficulty = "beginner" | "intermediary" | "advanced";
+type tags = "push" | "pull" | "legs" | "full" | "core" | "hit";
 
 export function NewTraining() {
   const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
@@ -31,7 +33,8 @@ export function NewTraining() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [difficulty, setDifficulty] = useState<difficulty>();
+  const [difficulty, setDifficulty] = useState<difficulty>("intermediary");
+  const [tags, setTags] = useState<tags>("push");
 
   async function fetchExercises() {
     const response = await api.get("/exercises");
@@ -85,7 +88,64 @@ export function NewTraining() {
             className="px-3"
           ></Input>
 
-          <ul className="flex gap-2">
+          <ul className="flex justify-between gap-2 flex-wrap">
+            <Tags
+              variant="push"
+              label="push"
+              id="push"
+              name="tags"
+              value={"push"}
+              checked={tags === "push"}
+              onChange={(e) => setTags(e.target.value as tags)}
+            ></Tags>
+            <Tags
+              variant="pull"
+              label="pull"
+              id="pull"
+              name="tags"
+              value={"pull"}
+              checked={tags === "pull"}
+              onChange={(e) => setTags(e.target.value as tags)}
+            ></Tags>
+            <Tags
+              variant="legs"
+              label="legs"
+              id="legs"
+              name="tags"
+              value={"legs"}
+              checked={tags === "legs"}
+              onChange={(e) => setTags(e.target.value as tags)}
+            ></Tags>
+            <Tags
+              variant="full"
+              label="full"
+              id="full"
+              name="tags"
+              value={"full"}
+              checked={tags === "full"}
+              onChange={(e) => setTags(e.target.value as tags)}
+            ></Tags>
+            <Tags
+              variant="core"
+              label="core"
+              id="core"
+              name="tags"
+              value={"core"}
+              checked={tags === "core"}
+              onChange={(e) => setTags(e.target.value as tags)}
+            ></Tags>
+            <Tags
+              variant="hit"
+              label="hiit"
+              id="hit"
+              name="tags"
+              value={"hit"}
+              checked={tags === "hit"}
+              onChange={(e) => setTags(e.target.value as tags)}
+            ></Tags>
+          </ul>
+
+          <ul className="flex gap-2 flex-wrap">
             <InputDifficulty
               variant="beginner"
               name="difficulty"
@@ -182,26 +242,69 @@ export function NewTraining() {
               </p>
             </div>
           ) : (
-            <ul className="mt-8 overflow-hidden rounded-2xl border border-[#252526]">
+            <ul className="flex flex-col gap-4">
               {selectedExercises.map((exercise) => (
                 <li
                   key={exercise.id}
-                  className="flex items-center gap-3 border-b border-[#252526] bg-card px-4 py-3 last:border-b-0"
+                  className="flex flex-col not-last:items-center border border-[#252526] bg-card  last:border-b-0 overflow-hidden rounded-2xl "
                 >
-                  <div className="h-fit w-fit rounded-lg bg-accent/10 p-2">
-                    <IconDumbbell color="#C8F135" />
-                  </div>
-                  <div className="w-full flex justify-between items-center">
-                    <div className="flex flex-col ">
-                      <span className="text-[#F0F0F2]">{exercise.name}</span>
-                      <small className="text-muted-foreground">
-                        {exercise.muscleGroup}
-                      </small>
+                  <div className="flex w-full gap-2 items-center px-4 py-3">
+                    <div className="h-fit w-fit rounded-lg bg-accent/10 p-2">
+                      <IconDumbbell color="#C8F135" />
                     </div>
+                    <div className="w-full flex justify-between items-center">
+                      <div className="flex flex-col ">
+                        <span className="text-[#F0F0F2]">{exercise.name}</span>
+                        <small className="text-muted-foreground">
+                          {exercise.muscleGroup}
+                        </small>
+                      </div>
 
-                    <button onClick={() => remove(exercise)}>
-                      <IconTrash color="#4C4C55"></IconTrash>
-                    </button>
+                      <button
+                        className="cursor-pointer"
+                        onClick={() => remove(exercise)}
+                      >
+                        <IconTrash color="#4C4C55"></IconTrash>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex w-full">
+                    <div className="p-3 flex-1 border-t border-r border-[#2E2E32]">
+                      <p className="uppercase text-muted-foreground mb-3">
+                        Séries
+                      </p>
+                      <input className="uppercase text-white" value="3"></input>
+                    </div>
+                    <div className="p-3 flex-1 border-t border-[#2E2E32]">
+                      <p className="uppercase text-muted-foreground mb-3 ">
+                        Reps
+                      </p>
+                      <input
+                        className="uppercase text-white"
+                        value="10-12"
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="flex w-full">
+                    <div className="p-3 flex-1 border-t border-r border-[#2E2E32]">
+                      <p className="uppercase text-muted-foreground mb-3">
+                        Carga
+                      </p>
+                      <input
+                        className="uppercase text-white"
+                        placeholder="60KG"
+                      ></input>
+                    </div>
+                    <div className="p-3 flex-1 border-t border-[#2E2E32]">
+                      <p className="uppercase text-muted-foreground mb-3 ">
+                        Reps
+                      </p>
+                      <input
+                        className="uppercase text-white"
+                        value="60s"
+                      ></input>
+                    </div>
                   </div>
                 </li>
               ))}
