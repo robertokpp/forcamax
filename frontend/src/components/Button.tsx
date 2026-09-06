@@ -6,9 +6,9 @@ type Props = React.ComponentProps<"button"> & {
 };
 
 const variants = {
-  primary: "bg-accent hover:bg-accent/95 disabled:bg-accent/70",
+  primary: "bg-accent hover:bg-accent/95 disabled:bg-[#6B6B78]/70",
   secondary: "bg-transparent text-accent disabled:text-accent/70",
-  ghost: "bg-transparent text-[#6B6B78] disabled:text-accent/70",
+  ghost: "bg-transparent text-accent disabled:text-[#6B6B78]/70",
 };
 
 export function Button({

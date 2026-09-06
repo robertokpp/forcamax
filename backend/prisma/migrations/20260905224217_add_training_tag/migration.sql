@@ -1,11 +1,12 @@
-/*
-  Warnings:
+DO $$
+BEGIN
+  CREATE TYPE "tag" AS ENUM ('push', 'pull', 'legs', 'full', 'core', 'hit');
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
-  - Added the required column `tag` to the `Training` table without a default value. This is not possible if the table is not empty.
+ALTER TABLE "Training"
+ADD COLUMN "tag" "tag" NOT NULL DEFAULT 'full';
 
-*/
--- CreateEnum
-CREATE TYPE "tag" AS ENUM ('push', 'pull', 'legs', 'full', 'core', 'hit');
-
--- AlterTable
-ALTER TABLE "Training" ADD COLUMN     "tag" "tag" NOT NULL;
+ALTER TABLE "Training"
+ALTER COLUMN "tag" DROP DEFAULT;

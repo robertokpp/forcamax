@@ -2,11 +2,11 @@ import { IconPlus, IconSearch } from "./Icons";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
-  isOpen?: () => boolean;
   children?: React.ReactNode;
+  onSearchChange?: (value: string) => void;
 };
 
-export function Dropdown({ children }: Props) {
+export function Dropdown({ children, onSearchChange }: Props) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +36,7 @@ export function Dropdown({ children }: Props) {
         <input
           id="InputDropDown"
           onFocus={() => setOpen(true)}
+          onChange={(event) => onSearchChange?.(event.target.value)}
           placeholder="Buscar exercício por nome ou músculo..."
           className="p-11 w-full h-full absolute placeholder:text-[14px] placeholder:text-[#3F3F47] focus:outline-0"
         ></input>

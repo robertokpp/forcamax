@@ -13,6 +13,7 @@ import { api } from "../services/api";
 import { Dropdown } from "../components/Dropdown";
 import { Button } from "../components/Button";
 import { Tags } from "../components/Tags";
+import { TargetMuscle } from "../components/TargetMuscle";
 
 interface Exercise {
   id: string;
@@ -22,12 +23,23 @@ interface Exercise {
   muscleGroup: string;
 }
 
+interface TargetMuscles {
+  id: string;
+  name: string;
+}
+
 type difficulty = "beginner" | "intermediary" | "advanced";
 type tags = "push" | "pull" | "legs" | "full" | "core" | "hit";
 
 export function NewTraining() {
   const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
   const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
+  const [trainingExercise, setTrainingExercise] = useState();
+  const [exerciseSearch, setExerciseSearch] = useState("");
+  const [targetMuscles, setTargetMuscles] = useState<TargetMuscles[]>([]);
+  const [selectedTargetMuscles, setSelectedTargetMuscles] = useState<
+    TargetMuscles[]
+  >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 3;
 
@@ -36,7 +48,7 @@ export function NewTraining() {
   const [difficulty, setDifficulty] = useState<difficulty>("intermediary");
   const [description, setDescription] = useState("");
 
-  const [sets, setSets] = useState("3");
+  const [sets, setSets] = useState(3);
   const [repetitions, setRepetitions] = useState("10-12");
   const [weight, setWeight] = useState("");
   const [interval, setInterval] = useState("60s");
@@ -44,6 +56,12 @@ export function NewTraining() {
   async function fetchExercises() {
     const response = await api.get("/exercises");
     setAvailableExercises(response.data);
+    console.log(sets);
+  }
+
+  async function fetchTargetMuscles() {
+    const response = await api.get("/targetmuscles");
+    setTargetMuscles(response.data);
   }
 
   function include(item: Exercise) {
@@ -51,6 +69,8 @@ export function NewTraining() {
       exercises.filter((exercise) => exercise.id !== item.id),
     );
     setSelectedExercises((exercises) => [...exercises, item]);
+
+    setTrainingExercise()
   }
 
   function remove(item: Exercise) {
@@ -60,8 +80,32 @@ export function NewTraining() {
     setAvailableExercises((exercises) => [...exercises, item]);
   }
 
+  function toggleTargetMuscle(targetMuscle: TargetMuscles) {
+    setSelectedTargetMuscles((muscles) =>
+      muscles.some((muscle) => muscle.id === targetMuscle.id)
+        ? muscles.filter((muscle) => muscle.id !== targetMuscle.id)
+        : [...muscles, targetMuscle],
+    );
+  }
+
+  const normalizeSearch = (value: string) =>
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase("pt-BR");
+
+  const filteredAvailableExercises = availableExercises.filter((exercise) => {
+    const search = normalizeSearch(exerciseSearch);
+
+    return (
+      normalizeSearch(exercise.name).includes(search) ||
+      normalizeSearch(exercise.muscleGroup).includes(search)
+    );
+  });
+
   useEffect(() => {
     fetchExercises();
+    fetchTargetMuscles();
   }, []);
 
   return (
@@ -191,17 +235,18 @@ export function NewTraining() {
             </label>
           </Textarea>
 
-          <div className="flex flex-wrap">
-            <div>
-              <input checked={true} type="checkbox" id="Peitoral" className="peer" />
-              <label
-                htmlFor="Peitoral"
-                className="border-2 border-[#252526] px-3 py-1.5 rounded-lg bg-card text-muted-foreground peer-checked:bg-accent/10 peer-checked:text-accent peer-checked:border-accent"
-              >
-                Peitoral
-              </label>
-            </div>
-           
+          <div className="flex flex-wrap gap-1">
+            {targetMuscles.map((item) => (
+              <TargetMuscle
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                checked={selectedTargetMuscles.some(
+                  (muscle) => muscle.id === item.id,
+                )}
+                onChange={() => toggleTargetMuscle(item)}
+              ></TargetMuscle>
+            ))}
           </div>
         </section>
       )}
@@ -215,8 +260,8 @@ export function NewTraining() {
             </small>
           </header>
 
-          <Dropdown>
-            {availableExercises.map((exercise) => (
+          <Dropdown onSearchChange={setExerciseSearch}>
+            {filteredAvailableExercises.map((exercise) => (
               <li
                 key={exercise.id}
                 className="px-4 py-3 flex gap-3 items-center bg-card border-b border-[#252526]"
@@ -284,7 +329,7 @@ export function NewTraining() {
                         className="uppercase text-white w-full outline-0"
                         placeholder="3"
                         value={sets}
-                        onChange={(e) => setSets(e.target.value)}
+                        onChange={(e) => setSets(e.target.valueAsNumber)}
                       ></input>
                     </div>
                     <div className="p-3 flex-1 border-t border-[#2E2E32]">
@@ -372,16 +417,28 @@ export function NewTraining() {
                   {description}
                 </p>
               </div>
+
+              <div className="flex flex-wrap gap-1">
+                {selectedTargetMuscles.map((item) => (
+                  <TargetMuscle
+                    key={item.id}
+                    id={`review-${item.id}`}
+                    name={item.name}
+                  ></TargetMuscle>
+                ))}
+              </div>
             </div>
             <div className="flex w-full items-center">
               <div className="flex-1">
                 <div className="flex flex-col justify-center items-center border-t border-b border-muted-foreground p-4">
-                  <p>{selectedExercises.length}</p>
-                  <p>
+                  <p className="text-[20px] text-white font-bold">
+                    {selectedExercises.length}
+                  </p>
+                  <small className="text-muted-foreground">
                     {selectedExercises.length === 1
                       ? "Exercício"
                       : "Exercícios"}
-                  </p>
+                  </small>
                 </div>
               </div>
               <div className="flex-1">
