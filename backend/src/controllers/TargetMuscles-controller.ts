@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import { prisma } from "../lib/prisma.js";
-import { string, z } from "zod";
+import { z } from "zod";
 
 class TargetMusclesController {
   async index(request: Request, response: Response) {
@@ -11,16 +11,16 @@ class TargetMusclesController {
 
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
-      name: string(),
+      name: z.string().trim().min(1),
     });
 
     const { name } = bodySchema.parse(request.body);
 
-    await prisma.targetMuscles.create({
+    const targetMuscle = await prisma.targetMuscles.create({
       data: { name },
     });
 
-    return response.json(201);
+    return response.status(201).json(targetMuscle);
   }
 }
 

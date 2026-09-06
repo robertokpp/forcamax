@@ -1,11 +1,11 @@
 type Props = React.ComponentProps<"input"> & {
-  id?: String;
-  name?: String;
+  id?: string;
+  name?: string;
 };
 
 export function TargetMuscle({ id, name, ...rest }: Props) {
   return (
-    <div key={id} className="relative flex items-center">
+    <div className="relative flex items-center">
       <input
         type="checkbox"
         id={id}

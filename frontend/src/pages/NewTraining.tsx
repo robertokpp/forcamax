@@ -14,6 +14,7 @@ import { Dropdown } from "../components/Dropdown";
 import { Button } from "../components/Button";
 import { Tags } from "../components/Tags";
 import { TargetMuscle } from "../components/TargetMuscle";
+import { useNavigate } from "react-router";
 
 interface Exercise {
   id: string;
@@ -28,13 +29,19 @@ interface TargetMuscles {
   name: string;
 }
 
+type SelectedExercise = Exercise & {
+  sets: number;
+  repetitions: string;
+  weight: string;
+  interval: string;
+};
+
 type difficulty = "beginner" | "intermediary" | "advanced";
 type tags = "push" | "pull" | "legs" | "full" | "core" | "hit";
 
 export function NewTraining() {
   const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
-  const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
-  const [trainingExercise, setTrainingExercise] = useState();
+  const [selectedExercises, setSelectedExercises] = useState<SelectedExercise[]>([]);
   const [exerciseSearch, setExerciseSearch] = useState("");
   const [targetMuscles, setTargetMuscles] = useState<TargetMuscles[]>([]);
   const [selectedTargetMuscles, setSelectedTargetMuscles] = useState<
@@ -47,16 +54,13 @@ export function NewTraining() {
   const [tags, setTags] = useState<tags>("push");
   const [difficulty, setDifficulty] = useState<difficulty>("intermediary");
   const [description, setDescription] = useState("");
-
-  const [sets, setSets] = useState(3);
-  const [repetitions, setRepetitions] = useState("10-12");
-  const [weight, setWeight] = useState("");
-  const [interval, setInterval] = useState("60s");
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function fetchExercises() {
     const response = await api.get("/exercises");
     setAvailableExercises(response.data);
-    console.log(sets);
   }
 
   async function fetchTargetMuscles() {
@@ -68,16 +72,34 @@ export function NewTraining() {
     setAvailableExercises((exercises) =>
       exercises.filter((exercise) => exercise.id !== item.id),
     );
-    setSelectedExercises((exercises) => [...exercises, item]);
-
-    setTrainingExercise()
+    setSelectedExercises((exercises) => [
+      ...exercises,
+      {
+        ...item,
+        sets: 3,
+        repetitions: "10-12",
+        weight: "",
+        interval: "60s",
+      },
+    ]);
   }
 
-  function remove(item: Exercise) {
+  function remove(item: SelectedExercise) {
     setSelectedExercises((exercises) =>
       exercises.filter((exercise) => exercise.id !== item.id),
     );
     setAvailableExercises((exercises) => [...exercises, item]);
+  }
+
+  function updateSelectedExercise(
+    exerciseId: string,
+    changes: Partial<Pick<SelectedExercise, "sets" | "repetitions" | "weight" | "interval">>,
+  ) {
+    setSelectedExercises((exercises) =>
+      exercises.map((exercise) =>
+        exercise.id === exerciseId ? { ...exercise, ...changes } : exercise,
+      ),
+    );
   }
 
   function toggleTargetMuscle(targetMuscle: TargetMuscles) {
@@ -102,6 +124,63 @@ export function NewTraining() {
       normalizeSearch(exercise.muscleGroup).includes(search)
     );
   });
+
+  async function saveTraining() {
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      await api.post("/training", {
+        name,
+        description: description || undefined,
+        tag: tags,
+        difficulty,
+        targetMuscleIds: selectedTargetMuscles.map((muscle) => muscle.id),
+        exercises: selectedExercises.map(({ id, sets, repetitions, weight, interval }) => ({
+          id,
+          sets,
+          repetitions,
+          weight,
+          interval,
+        })),
+      });
+
+      navigate("/Treinos");
+    } catch {
+      setSaveError("Não foi possível salvar o treino. Tente novamente.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  const totalSets = selectedExercises.reduce(
+    (total, exercise) => total + exercise.sets,
+    0,
+  );
+
+  function intervalToSeconds(intervalValue: string) {
+    const match = intervalValue
+      .trim()
+      .toLocaleLowerCase("pt-BR")
+      .match(/^(\d+(?:[.,]\d+)?)\s*(m|min|mins|minuto|minutos)?/);
+
+    if (!match) return 0;
+
+    const value = Number(match[1].replace(",", "."));
+    return match[2] ? value * 60 : value;
+  }
+
+  const estimatedDurationSeconds = selectedExercises.reduce(
+    (total, exercise) =>
+      total +
+      exercise.sets * 45 +
+      Math.max(exercise.sets - 1, 0) * intervalToSeconds(exercise.interval),
+    0,
+  );
+  const estimatedDurationMinutes = Math.max(
+    1,
+    Math.round(estimatedDurationSeconds / 60),
+  );
 
   useEffect(() => {
     fetchExercises();
@@ -326,10 +405,16 @@ export function NewTraining() {
                         Séries
                       </p>
                       <input
+                        type="number"
+                        min="1"
                         className="uppercase text-white w-full outline-0"
                         placeholder="3"
-                        value={sets}
-                        onChange={(e) => setSets(e.target.valueAsNumber)}
+                        value={exercise.sets}
+                        onChange={(e) =>
+                          updateSelectedExercise(exercise.id, {
+                            sets: e.target.valueAsNumber || 1,
+                          })
+                        }
                       ></input>
                     </div>
                     <div className="p-3 flex-1 border-t border-[#2E2E32]">
@@ -339,8 +424,12 @@ export function NewTraining() {
                       <input
                         className="uppercase text-white w-full outline-0"
                         placeholder="10-12"
-                        value={repetitions}
-                        onChange={(e) => setRepetitions(e.target.value)}
+                        value={exercise.repetitions}
+                        onChange={(e) =>
+                          updateSelectedExercise(exercise.id, {
+                            repetitions: e.target.value,
+                          })
+                        }
                       ></input>
                     </div>
                   </div>
@@ -352,8 +441,12 @@ export function NewTraining() {
                       <input
                         className="uppercase text-white w-full outline-0"
                         placeholder="60KG"
-                        value={weight}
-                        onChange={(e) => setWeight(e.target.value)}
+                        value={exercise.weight}
+                        onChange={(e) =>
+                          updateSelectedExercise(exercise.id, {
+                            weight: e.target.value,
+                          })
+                        }
                       ></input>
                     </div>
                     <div className="p-3 flex-1 border-t border-[#2E2E32]">
@@ -363,8 +456,12 @@ export function NewTraining() {
                       <input
                         className="uppercase text-white w-full outline-0"
                         placeholder="60s"
-                        value={interval}
-                        onChange={(e) => setInterval(e.target.value)}
+                        value={exercise.interval}
+                        onChange={(e) =>
+                          updateSelectedExercise(exercise.id, {
+                            interval: e.target.value,
+                          })
+                        }
                       ></input>
                     </div>
                   </div>
@@ -443,22 +540,20 @@ export function NewTraining() {
               </div>
               <div className="flex-1">
                 <div className="flex flex-col justify-center items-center border border-muted-foreground p-4">
-                  <p>{selectedExercises.length}</p>
-                  <p>
-                    {selectedExercises.length === 1
-                      ? "Exercício"
-                      : "Exercícios"}
-                  </p>
+                  <p className="text-[20px] text-white font-bold">{totalSets}</p>
+                  <small className="text-muted-foreground">
+                    {totalSets === 1
+                      ? "Série"
+                      : "Séries"}
+                  </small>
                 </div>
               </div>
               <div className="flex-1">
                 <div className="flex flex-col justify-center items-center border-t border-b border-muted-foreground p-4">
-                  <p>{selectedExercises.length}</p>
-                  <p>
-                    {selectedExercises.length === 1
-                      ? "Exercício"
-                      : "Exercícios"}
+                  <p className="text-[20px] text-white font-bold">
+                    ~{estimatedDurationMinutes} min
                   </p>
+                  <small className="text-muted-foreground">Duração</small>
                 </div>
               </div>
             </div>
@@ -479,7 +574,7 @@ export function NewTraining() {
         </div>
         <div>
           {currentPage === totalPages ? (
-            <Button>
+            <Button isLoading={isSaving} onClick={saveTraining}>
               <IconCheck />
               Salvar Plano
             </Button>
@@ -499,6 +594,11 @@ export function NewTraining() {
           )}
         </div>
       </div>
+      {saveError && (
+        <p className="fixed bottom-20 left-4 right-4 rounded-lg bg-red-950 p-3 text-center text-sm text-red-100">
+          {saveError}
+        </p>
+      )}
     </>
   );
 }
