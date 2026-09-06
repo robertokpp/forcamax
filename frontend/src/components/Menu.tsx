@@ -11,7 +11,7 @@ export function Menu() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   return (
-    <div className="flex min-h-screen relative">
+    <div className="relative h-screen overflow-hidden">
       {isOpenMenu && (
         <button
           type="button"
@@ -22,7 +22,7 @@ export function Menu() {
       )}
 
       <div
-        className={`fixed inset-y-0 left-0 z-20 transition-transform duration-500 ease-in-out ${
+        className={`fixed top-0 left-0 z-20 h-screen transition-transform duration-500 ease-in-out ${
           isOpenMenu ? "translate-x-0" : "-translate-x-full pointer-events-none"
         }`}
       >
@@ -65,14 +65,14 @@ export function Menu() {
           </div>
         </div>
       </div>
-      <main className="relative w-full min-h-screen bg-[#0C0C0E]">
+      <main className="relative h-screen w-full overflow-y-auto bg-[#0C0C0E]">
         {!isOpenMenu && (
           <button
             type="button"
             aria-label="Abrir menu"
             title="Abrir menu"
             onClick={() => setIsOpenMenu(true)}
-            className="fixed top-1 left-2 z-10 flex h-11 w-11 items-center justify-center rounded-xl bg-sidebar text-2xl text-white shadow-lg hover:bg-white/10 cursor-pointer"
+            className="absolute top-1 left-2 z-10 flex h-11 w-11 items-center justify-center rounded-xl bg-sidebar text-2xl text-white shadow-lg hover:bg-white/10 cursor-pointer"
           >
             &#9776;
           </button>
