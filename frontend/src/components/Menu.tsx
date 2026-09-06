@@ -22,13 +22,10 @@ export function Menu() {
       )}
 
       <div
-        className={`absolute left-0 top-0 z-20 transition-transform duration-500 ease-in-out ${
-          isOpenMenu
-            ? "translate-x-0"
-            : "-translate-x-full pointer-events-none"
+        className={`fixed inset-y-0 left-0 z-20 transition-transform duration-500 ease-in-out ${
+          isOpenMenu ? "translate-x-0" : "-translate-x-full pointer-events-none"
         }`}
       >
-
         <div className="bg-sidebar w-fit min-h-screen p-4 flex-col flex shadow-xl">
           <aside className="p-4 flex items-center justify-between gap-8">
             <HeaderLogo />
@@ -42,8 +39,6 @@ export function Menu() {
             >
               &times;
             </button>
-
-
           </aside>
           <div className="flex flex-1 flex-col justify-between">
             <nav>
@@ -59,11 +54,11 @@ export function Menu() {
 
             <footer className="flex gap-3 items-center">
               <div className="bg-accent/20 w-8 h-8 flex items-center justify-center rounded-full border-2 border-accent">
-                <span className="text-accent font-bold">R</span>
+                <span className="text-accent font-bold uppercase">{session?.user.name[0]}</span>
               </div>
 
               <div>
-                <p className="text-white">{session?.user.name}</p>
+                <p className="text-white">{session?.user.name.split(" ")[0]}</p>
                 <small className="text-muted-foreground">Intermediário</small>
               </div>
             </footer>
@@ -71,8 +66,6 @@ export function Menu() {
         </div>
       </div>
       <main className="relative w-full min-h-screen bg-[#0C0C0E]">
-       
-       
         {!isOpenMenu && (
           <button
             type="button"
@@ -84,7 +77,6 @@ export function Menu() {
             &#9776;
           </button>
         )}
-
 
         <Outlet />
       </main>
