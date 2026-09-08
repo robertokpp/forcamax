@@ -27,8 +27,43 @@
   --color-sidebar-accent: #1e1e22;
   --color-sidebar-border: rgba(255, 255, 255, 0.06);
 
-  --font-size: 16px;
-  --font-weight-medium: 600;
+  --font-sans: "DM Sans", sans-serif;
+  --font-heading: "Barlow Condensed", sans-serif;
+  --font-mono: "DM Mono", monospace;
+
+  /* Headlines heroicas, titulos de pagina, secao e destaques. */
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1;
+  --text-5xl--font-weight: 700;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 1.1;
+  --text-4xl--font-weight: 700;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 1.2;
+  --text-3xl--font-weight: 700;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.25;
+  --text-2xl--font-weight: 700;
+
+  /* Titulos de card, corpo e labels. */
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.4;
+  --text-xl--font-weight: 600;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5;
+  --text-base--font-weight: 400;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-sm--font-weight: 600;
+
+  /* Dados tabulares e metadata: combinar com font-mono. */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-xs--font-weight: 500;
+
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   --font-weight-normal: 400;
   --radius: 0.5rem;
   --color-ring: #c8f135;

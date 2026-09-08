@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import { Tags } from "./Tags";
 type Props = React.ComponentProps<"button"> & {
   tag?: string;
   difficulty: string;
@@ -18,6 +19,7 @@ export function Card({ tag, difficulty, title, className, ...rest }: Props) {
         <div className="bg-accent/10 text-accent rounded-sm px-2">
           <small>PUSH</small>
         </div>
+        
         <div>
           <small>{difficulty}</small>
         </div>
