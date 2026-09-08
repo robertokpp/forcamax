@@ -9,7 +9,8 @@ import { data, useNavigate } from "react-router";
 interface Training {
   id: string;
   name: string;
-  difficulty: string;
+  difficulty: "beginner" | "intermediary" | "advanced";
+  tag: "push" | "pull" | "legs" | "full" | "core" | "hit";
 }
 
 interface Exercises {
@@ -33,12 +34,12 @@ export function Training() {
   async function fetchTraining() {
     const response = await api.get("/training");
     setTrainings(response.data);
+    console.log(response.data)
   }
 
   async function openCards(trainingId: string) {
     const response = await api.get(`/exercises/${trainingId}`);
     setExercises(response.data);
-    console.log(response.data);
   }
 
   useEffect(() => {
@@ -118,6 +119,7 @@ export function Training() {
               onClick={() => openCards(item.id)}
               className="cursor"
               key={item.id}
+              tag={item.tag}
               title={item.name}
               difficulty={item.difficulty}
             ></Card>
@@ -141,7 +143,9 @@ export function Training() {
       {pages === 2 && (
         <section className="p-4 flex flex-col gap-2">
           <div>
-            <p className="text-white">AQUI VAI FICAR OS DIAS QUER FOI REALIZADOS OS TREINOS</p>
+            <p className="text-white">
+              AQUI VAI FICAR OS DIAS QUER FOI REALIZADOS OS TREINOS
+            </p>
           </div>
         </section>
       )}

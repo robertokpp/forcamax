@@ -5,19 +5,24 @@ import { z } from "zod";
 
 class TrainingController {
   async index(request: Request, response: Response) {
-    const id = request.user?.id
+    const id = request.user?.id;
 
-    if(!id){
-      throw new AppError("Usuário não autenticado.")
+    if (!id) {
+      throw new AppError("Usuário não autenticado.");
     }
-    
+
     const training = await prisma.training.findMany({
       where: { userId: id },
-      include: { TargetMuscles: true },
+      include: {
+        TargetMuscles: true,
+        exercises: true,
+        trainingExercises: true,
+      },
     });
 
     return response.json(training);
   }
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       name: z.string().trim().min(3),
@@ -25,13 +30,17 @@ class TrainingController {
       tag: z.enum(["push", "pull", "legs", "full", "core", "hit"]),
       difficulty: z.enum(["beginner", "intermediary", "advanced"]),
       targetMuscleIds: z.array(z.uuid()).default([]),
-      exercises: z.array(z.object({
-        id: z.uuid(),
-        sets: z.number().int().positive().optional(),
-        repetitions: z.string().trim().max(50).optional(),
-        weight: z.string().trim().max(50).optional(),
-        interval: z.string().trim().max(50).optional(),
-      })).min(1),
+      exercises: z
+        .array(
+          z.object({
+            id: z.uuid(),
+            sets: z.number().int().positive().optional(),
+            repetitions: z.string().trim().max(50).optional(),
+            weight: z.string().trim().max(50).optional(),
+            interval: z.string().trim().max(50).optional(),
+          }),
+        )
+        .min(1),
     });
 
     const userId = request.user?.id;
@@ -45,7 +54,9 @@ class TrainingController {
     const exerciseIds = exercises.map((exercise) => exercise.id);
 
     if (new Set(exerciseIds).size !== exerciseIds.length) {
-      throw new AppError("Um exercício não pode ser adicionado mais de uma vez.");
+      throw new AppError(
+        "Um exercício não pode ser adicionado mais de uma vez.",
+      );
     }
 
     if (new Set(targetMuscleIds).size !== targetMuscleIds.length) {
