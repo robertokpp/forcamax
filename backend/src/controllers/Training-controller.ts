@@ -11,14 +11,30 @@ class TrainingController {
       throw new AppError("Usuário não autenticado.");
     }
 
-    const training = await prisma.training.findMany({
+    const trainingFull = await prisma.training.findMany({
       where: { userId: id },
       include: {
         TargetMuscles: true,
-        exercises: true,
-        trainingExercises: true,
+        trainingExercises: { include: { exercise: true } },
       },
     });
+
+    const training = trainingFull.map((item) => ({
+      id: item.id,
+      name: item.name,
+      description: item.name,
+      tag: item.tag,
+      difficulty: item.difficulty,
+      exercises: item.trainingExercises.map((exercise) => ({
+        id: exercise.exercise.id,
+        name: exercise.exercise.name,
+        set: exercise.sets,
+        repetitions: exercise.repetitions,
+        weight: exercise.weight,
+        interval: exercise.interval,
+        muscleGroup: exercise.exercise.muscleGroup,
+      })),
+    }));
 
     return response.json(training);
   }
