@@ -9,6 +9,7 @@ import { data, useNavigate } from "react-router";
 interface Training {
   id: string;
   name: string;
+  description: string;
   difficulty: "beginner" | "intermediary" | "advanced";
   tag: "push" | "pull" | "legs" | "full" | "core" | "hit";
 }
@@ -34,7 +35,7 @@ export function Training() {
   async function fetchTraining() {
     const response = await api.get("/training");
     setTrainings(response.data);
-    console.log(response.data)
+    console.log(response.data);
   }
 
   async function openCards(trainingId: string) {
