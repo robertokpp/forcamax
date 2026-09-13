@@ -1,18 +1,25 @@
 import { twMerge } from "tailwind-merge";
 import { Tags } from "./Tags";
-import { InputDifficulty } from "./Input";
+import { InputDifficulty, Select } from "./Input";
 type Props = React.ComponentProps<"button"> & {
   tag: "push" | "pull" | "legs" | "full" | "core" | "hit";
   difficulty: "beginner" | "intermediary" | "advanced";
   title: string;
-  interval? : string
+  interval?: string;
 };
 
-export function Card({interval, tag, difficulty, title, className, ...rest }: Props) {
+export function Card({
+  interval,
+  tag,
+  difficulty,
+  title,
+  className,
+  ...rest
+}: Props) {
   return (
     <button
       className={twMerge(
-        `flex flex-col bg-card border border-[#252526] p-4 text-white rounded-xl cursor-pointer`,
+        `flex flex-col bg-card border border-[#252526]  p-4 text-white rounded-xl cursor-pointer`,
         className,
       )}
       {...rest}
@@ -20,20 +27,17 @@ export function Card({interval, tag, difficulty, title, className, ...rest }: Pr
       <div className="flex gap-2 items-center">
         <div>
           <Tags
-            id={tag}
-            name={tag}
-            label={tag}
             variant={tag}
+            label={tag}
             checked={true}
-            className="w-fit py-0"
+            className="py-0 border-0"
           ></Tags>
         </div>
         <div>
           <InputDifficulty
             id={difficulty}
-            name={difficulty}
             variant={difficulty}
-            className="py-0"
+            className="py-0 border-0"
             checked={true}
           >
             {difficulty === "beginner" && "Iniciante"}

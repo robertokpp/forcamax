@@ -112,7 +112,7 @@ export function Option({ children, className, value, ...rest }: InputOption) {
 }
 
 type PropsDifficulty = React.ComponentProps<"input"> & {
-  name: string;
+  name?: string;
   id: string;
   variant: keyof typeof variants;
 };

@@ -1,8 +1,8 @@
 import { twMerge } from "tailwind-merge";
 
 type Props = React.ComponentProps<"input"> & {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   label: string;
   variant: keyof typeof variants;
 };
@@ -16,7 +16,7 @@ const variants = {
   hit: "peer-checked:border-[#F43F5E] peer-checked:bg-[#F43F5E]/10 peer-checked:text-[#F43F5E]",
 };
 
-export function Tags({ id, name, label, variant, className, ...rest }: Props) {
+export function Tags({ id, name, label, className, variant, ...rest }: Props) {
   const variantColor = variants[variant];
   return (
     <div className="flex-1">

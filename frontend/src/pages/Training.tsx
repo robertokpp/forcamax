@@ -27,7 +27,7 @@ interface Exercises {
 export function Training() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [exercises, setExercises] = useState<Exercises[]>([]);
-  const [openCard, setOpenCard] = useState(null);
+  const [openCard, setOpenCard] = useState("");
   const [pages, setPages] = useState(1);
 
   const navigate = useNavigate();
@@ -117,8 +117,11 @@ export function Training() {
         <section className="p-4 flex flex-col gap-4">
           {trainings.map((item) => (
             <Card
-              onClick={() => openCards(item.id)}
-              className="cursor"
+              onClick={() => {
+                openCards(item.id);
+                setOpenCard(item.id);
+              }}
+              className={`${openCard === item.id && "border-accent"}`}
               key={item.id}
               tag={item.tag}
               title={item.name}
@@ -126,18 +129,23 @@ export function Training() {
             ></Card>
           ))}
 
-          {exercises.map((exercise, index) => (
-            <CardExercise
-              key={exercise.id}
-              index={index}
-              name={exercise.name}
-              muscleGroup={exercise.muscleGroup}
-              set={exercise.set}
-              repetitions={exercise.repetitions}
-              interval={exercise.interval}
-              weight={exercise.weight}
-            ></CardExercise>
-          ))}
+          <div className="flex flex-col gap-4">
+            {exercises.map((exercise, index) => (
+              <CardExercise
+                key={exercise.id}
+                index={index}
+                name={exercise.name}
+                muscleGroup={exercise.muscleGroup}
+                set={exercise.set}
+                repetitions={exercise.repetitions}
+                interval={exercise.interval}
+                weight={exercise.weight}
+              ></CardExercise>
+            ))}
+            <div>
+              <Button>INICIAR TREINO</Button>
+            </div>
+          </div>
         </section>
       )}
 
