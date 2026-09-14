@@ -10,6 +10,17 @@ interface Training {
   id: string;
   name: string;
   description: string;
+  exercises: [
+    {
+      id: string;
+      name: string;
+      muscleGroup: string;
+      interval: string;
+      weight: string;
+      repetitions: string;
+      set: string;
+    },
+  ];
   difficulty: "beginner" | "intermediary" | "advanced";
   tag: "push" | "pull" | "legs" | "full" | "core" | "hit";
 }
@@ -35,7 +46,6 @@ export function Training() {
   async function fetchTraining() {
     const response = await api.get("/training");
     setTrainings(response.data);
-    console.log(response.data);
   }
 
   async function openCards(trainingId: string) {
@@ -73,7 +83,6 @@ export function Training() {
               <small className="font-sans text-xs text-muted-foreground">
                 {trainings.length}
                 <small className="font-sans text-xs text-muted-foreground">
-                  {" "}
                   Plano
                 </small>
               </small>
@@ -81,7 +90,6 @@ export function Training() {
               <small className="font-sans text-xs text-muted-foreground">
                 {trainings.length}
                 <small className="font-sans text-xs text-muted-foreground">
-                  {" "}
                   Planos
                 </small>
               </small>
@@ -126,6 +134,7 @@ export function Training() {
               tag={item.tag}
               title={item.name}
               difficulty={item.difficulty}
+              exercises={item.exercises.length}
             ></Card>
           ))}
 

@@ -1,11 +1,13 @@
 import { twMerge } from "tailwind-merge";
 import { Tags } from "./Tags";
 import { InputDifficulty, Select } from "./Input";
+import { IconClock } from "./Icons";
 type Props = React.ComponentProps<"button"> & {
   tag: "push" | "pull" | "legs" | "full" | "core" | "hit";
   difficulty: "beginner" | "intermediary" | "advanced";
   title: string;
   interval?: string;
+  exercises: number;
 };
 
 export function Card({
@@ -13,6 +15,7 @@ export function Card({
   tag,
   difficulty,
   title,
+  exercises,
   className,
   ...rest
 }: Props) {
@@ -50,9 +53,12 @@ export function Card({
         <p className="font-bold uppercase">{title}</p>
       </div>
       <div className="flex gap-4 text-muted-foreground">
-        <small>{interval}</small>
-        <small>8 ex.</small>
-        <small>460</small>
+        <div className="flex">
+          <IconClock></IconClock>
+          <p>{`${exercises * 6} min.`}</p>
+        </div>
+        <p>{`${exercises} ex.`}</p>
+        <p>{`${exercises * 30}`}</p>
       </div>
     </button>
   );
