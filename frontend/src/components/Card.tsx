@@ -58,7 +58,7 @@ export function Card({
           <p>{`${exercises * 6} min.`}</p>
         </div>
         <p>{`${exercises} ex.`}</p>
-        <p>{`${exercises * 30}`}</p>
+        <p>{`${exercises * 60}`}</p>
       </div>
     </button>
   );

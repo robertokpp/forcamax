@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { api } from "../services/api";
-import { IconHeart, IconPlus } from "../components/Icons";
+import {
+  IconClock,
+  IconFlame,
+  IconHeart,
+  IconLayers,
+  IconPlus,
+} from "../components/Icons";
 import { Card } from "../components/Card";
 import { CardExercise } from "../components/CardExercise";
-import { data, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 interface Training {
   id: string;
@@ -25,19 +31,9 @@ interface Training {
   tag: "push" | "pull" | "legs" | "full" | "core" | "hit";
 }
 
-interface Exercises {
-  id: string;
-  name: string;
-  muscleGroup: string;
-  interval: string;
-  weight: string;
-  repetitions: string;
-  set: string;
-}
-
 export function Training() {
   const [trainings, setTrainings] = useState<Training[]>([]);
-  const [exercises, setExercises] = useState<Exercises[]>([]);
+  const [exercises, setExercises] = useState<Training>();
   const [openCard, setOpenCard] = useState("");
   const [pages, setPages] = useState(1);
 
@@ -48,9 +44,8 @@ export function Training() {
     setTrainings(response.data);
   }
 
-  async function openCards(trainingId: string) {
-    const response = await api.get(`/exercises/${trainingId}`);
-    setExercises(response.data);
+  async function openCards(trainingId: Training) {
+    setExercises(trainingId);
   }
 
   useEffect(() => {
@@ -81,17 +76,11 @@ export function Training() {
             )}
             {trainings.length === 1 ? (
               <small className="font-sans text-xs text-muted-foreground">
-                {trainings.length}
-                <small className="font-sans text-xs text-muted-foreground">
-                  Plano
-                </small>
+                {`${trainings.length} Plano`}
               </small>
             ) : (
               <small className="font-sans text-xs text-muted-foreground">
-                {trainings.length}
-                <small className="font-sans text-xs text-muted-foreground">
-                  Planos
-                </small>
+                {`${trainings.length} Planos`}
               </small>
             )}
           </div>
@@ -123,10 +112,10 @@ export function Training() {
 
       {pages === 1 && (
         <section className="p-4 flex flex-col gap-4">
-          {trainings.map((item) => (
+          {trainings.map((item, index) => (
             <Card
               onClick={() => {
-                openCards(item.id);
+                openCards(trainings[index]);
                 setOpenCard(item.id);
               }}
               className={`${openCard === item.id && "border-accent"}`}
@@ -139,7 +128,38 @@ export function Training() {
           ))}
 
           <div className="flex flex-col gap-4">
-            {exercises.map((exercise, index) => (
+            {exercises && (
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <div className="bg-card border border-[#252526] text-white rounded-xl flex flex-col items-center p-5 gap-2 h-full">
+                    <IconClock color="#6B6B78"></IconClock>
+                    <p className="text-[18px] font-bold text-center">{`${exercises.exercises.length * 6} min`}</p>
+                    <span className="text-[12px] text-muted-foreground nowrap">
+                      Duração
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
+                    <IconLayers color="#6B6B78"></IconLayers>
+                    <p className="text-[18px] font-bold text-center">{exercises.exercises.length}</p>
+                    <span className="text-[12px] text-muted-foreground">
+                      Exercícios
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
+                    <IconFlame color="#6B6B78"></IconFlame>
+                    <p className="text-[18px] font-bold text-center">{`${exercises.exercises.length * 60} kcal`}</p>
+                    <span className="text-[12px] text-muted-foreground">
+                      Calorias
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {exercises?.exercises.map((exercise, index) => (
               <CardExercise
                 key={exercise.id}
                 index={index}
