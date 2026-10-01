@@ -52,7 +52,7 @@ export function Menu() {
               ))}
             </nav>
 
-            <footer className="flex gap-3 items-center">
+            <footer className="flex gap-3 items-center bg-muted py-1">
               <div className="bg-accent/20 w-8 h-8 flex items-center justify-center rounded-full border-2 border-accent">
                 <span className="text-accent font-bold uppercase">{session?.user.name[0]}</span>
               </div>
@@ -65,6 +65,11 @@ export function Menu() {
           </div>
         </div>
       </div>
+
+
+
+
+
       <main className="relative h-screen w-full overflow-y-auto bg-[#0C0C0E]">
         {!isOpenMenu && (
           <button

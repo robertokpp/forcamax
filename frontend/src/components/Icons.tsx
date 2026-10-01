@@ -1,4 +1,3 @@
-import { he } from "zod/locales";
 
 type Props = {
   color?: string;
@@ -68,6 +67,36 @@ export function IconArrowLeft({
   );
 }
 
+export function IconArrowRight({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4.1665 10H15.8332"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10 4.16666L15.8333 9.99999L10 15.8333"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
 export function IconHeart({
   width = "20",
   height = "20",
@@ -409,6 +438,30 @@ export function IconLayers({
           <rect width="20" height="20" fill="white" />
         </clipPath>
       </defs>
+    </svg>
+  );
+}
+
+export function IconPlay({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 14 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0.833496 0.833344L12.5002 8.33334L0.833496 15.8333V0.833344Z"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 }

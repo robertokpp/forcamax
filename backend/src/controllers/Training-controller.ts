@@ -22,7 +22,7 @@ class TrainingController {
     const training = trainingFull.map((item) => ({
       id: item.id,
       name: item.name,
-      description: item.name,
+      description: item.description,
       tag: item.tag,
       difficulty: item.difficulty,
       exercises: item.trainingExercises.map((exercise) => ({

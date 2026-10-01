@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { api } from "../services/api";
 import {
+  IconArrowLeft,
+  IconArrowRight,
   IconClock,
   IconFlame,
   IconHeart,
   IconLayers,
+  IconPlay,
   IconPlus,
 } from "../components/Icons";
 import { Card } from "../components/Card";
@@ -127,54 +130,76 @@ export function Training() {
             ></Card>
           ))}
 
-          <div className="flex flex-col gap-4">
-            {exercises && (
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <div className="bg-card border border-[#252526] text-white rounded-xl flex flex-col items-center p-5 gap-2 h-full">
-                    <IconClock color="#6B6B78"></IconClock>
-                    <p className="text-[18px] font-bold text-center">{`${exercises.exercises.length * 6} min`}</p>
-                    <span className="text-[12px] text-muted-foreground nowrap">
-                      Duração
-                    </span>
+          {exercises && (
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <div className="bg-card border border-[#252526] text-white rounded-xl flex flex-col items-center p-5 gap-2 h-full">
+                      <IconClock color="#6B6B78"></IconClock>
+                      <p className="text-[18px] font-bold text-center">{`${exercises.exercises.length * 6} min`}</p>
+                      <span className="text-[12px] text-muted-foreground nowrap">
+                        Duração
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
+                      <IconLayers color="#6B6B78"></IconLayers>
+                      <p className="text-[18px] font-bold text-center">
+                        {exercises.exercises.length}
+                      </p>
+                      <span className="text-[12px] text-muted-foreground">
+                        Exercícios
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
+                      <IconFlame color="#6B6B78"></IconFlame>
+                      <p className="text-[18px] font-bold text-center">{`${exercises.exercises.length * 60} kcal`}</p>
+                      <span className="text-[12px] text-muted-foreground">
+                        Calorias
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex-1">
-                  <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
-                    <IconLayers color="#6B6B78"></IconLayers>
-                    <p className="text-[18px] font-bold text-center">{exercises.exercises.length}</p>
-                    <span className="text-[12px] text-muted-foreground">
-                      Exercícios
-                    </span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
-                    <IconFlame color="#6B6B78"></IconFlame>
-                    <p className="text-[18px] font-bold text-center">{`${exercises.exercises.length * 60} kcal`}</p>
-                    <span className="text-[12px] text-muted-foreground">
-                      Calorias
-                    </span>
-                  </div>
+
+                <div>
+                  <p className="text-muted-foreground text-[12px] font-sans">
+                    {exercises.description}
+                  </p>
                 </div>
               </div>
-            )}
-            {exercises?.exercises.map((exercise, index) => (
-              <CardExercise
-                key={exercise.id}
-                index={index}
-                name={exercise.name}
-                muscleGroup={exercise.muscleGroup}
-                set={exercise.set}
-                repetitions={exercise.repetitions}
-                interval={exercise.interval}
-                weight={exercise.weight}
-              ></CardExercise>
-            ))}
-            <div>
-              <Button>INICIAR TREINO</Button>
+
+              <div className="flex justify-between">
+                <h2 className="font-heading font-bold text-[18px] text-white">
+                  EXERCÍCIOS
+                </h2>
+                <span className="text-muted-foreground">{`${exercises?.exercises.length} movimentos`}</span>
+              </div>
+
+              {exercises?.exercises.map((exercise, index) => (
+                <CardExercise
+                  key={exercise.id}
+                  index={index}
+                  name={exercise.name}
+                  muscleGroup={exercise.muscleGroup}
+                  set={exercise.set}
+                  repetitions={exercise.repetitions}
+                  interval={exercise.interval}
+                  weight={exercise.weight}
+                ></CardExercise>
+              ))}
+              <div>
+                <Button>
+                  <IconPlay></IconPlay>
+                  INICIAR TREINO
+                  <IconArrowRight></IconArrowRight>
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </section>
       )}
 
