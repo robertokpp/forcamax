@@ -1,11 +1,13 @@
 import { prisma } from "../src/lib/prisma";
 import { hash } from "bcrypt";
 
+//npx prisma db seed
+
 async function seed() {
   const email = "roberto@teste.com";
   const password = await hash("12345678", 10);
 
-  await prisma.user.upsert({
+  const userTest = await prisma.user.upsert({
     where: { email },
     create: { name: "roberto", email, password },
     update: { name: "roberto", password },
@@ -1115,6 +1117,14 @@ async function seed() {
         },
       ],
     });
+  }
+
+  const createTraining = await prisma.training.findMany({
+    where: { userId: userTest.id }
+  })
+  
+  if (createTraining.length === 0 ){
+    
   }
   
 }
