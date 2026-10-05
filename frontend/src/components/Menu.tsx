@@ -66,10 +66,6 @@ export function Menu() {
         </div>
       </div>
 
-
-
-
-
       <main className="relative h-screen w-full overflow-y-auto bg-[#0C0C0E]">
         {!isOpenMenu && (
           <button

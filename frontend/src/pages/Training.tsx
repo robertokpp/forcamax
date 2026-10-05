@@ -192,7 +192,7 @@ export function Training() {
                 ></CardExercise>
               ))}
               <div>
-                <Button>
+                <Button onClick={() => navigate("/SessaoTreino")}>
                   <IconPlay></IconPlay>
                   INICIAR TREINO
                   <IconArrowRight></IconArrowRight>

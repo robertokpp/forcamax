@@ -9,6 +9,7 @@ import { Conquest } from "../pages/Conquest";
 import { Menu } from "../components/Menu";
 import { NotFound } from "../pages/NotFound";
 import { NewTraining } from "../pages/NewTraining";
+import { TrainingSession } from "../pages/TrainingSession";
 
 export function AppRoutes() {
   return (
@@ -21,8 +22,9 @@ export function AppRoutes() {
         <Route path="/Progresso" element={<Progress />} />
         <Route path="/Conquistas" element={<Conquest />} />
         <Route path="/Perfil" element={<Profile />} />
-        <Route path="/*" element={<NotFound />} />
       </Route>
+      <Route path="/SessaoTreino" element={<TrainingSession />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   );
 }
