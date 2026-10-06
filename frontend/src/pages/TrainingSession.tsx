@@ -1,5 +1,10 @@
 import { Button } from "../components/Button";
-import { IconClock, IconFlame, IconLayers, IconX } from "../components/Icons";
+import {
+  IconCheck,
+  IconClock,
+  IconPause,
+  IconX,
+} from "../components/Icons";
 import { useState } from "react";
 export function TrainingSession() {
   const [pages, setPages] = useState(1);
@@ -7,8 +12,8 @@ export function TrainingSession() {
   return (
     <main className="h-screen w-full overflow-y-auto bg-[#0C0C0E]">
       <header className="text-white p-4 border-b flex justify-between items-center">
-        <Button variant="ghost" className="w-fit">
-          <IconX color="white"></IconX>
+        <Button variant="ghost" className="w-fit text-muted-foreground">
+          <IconX color="#6B6B78"></IconX>
           Encerrar
         </Button>
 
@@ -17,15 +22,15 @@ export function TrainingSession() {
           <h1>PEITO & TRÍCEPS</h1>
         </div>
 
-        <div className="flex items-center gap-4">
-          <IconClock color="white"></IconClock>
+        <div className="flex items-center gap-4 bg-[#1E1E22] px-3 py-1 rounded-lg">
+          <IconClock color="#C8F135"></IconClock>
           <span>04:00</span>
         </div>
       </header>
 
       <section className="px-6 py-8">
         <div>
-          <div className="flex justify-between bg-accent/20 p-6 items-center">
+          <div className="flex justify-between bg-accent/20 p-6 items-center rounded-t-2xl">
             <div className="flex flex-col text-white">
               <span className="font-sans text-muted-foreground">PEITORAL</span>
               <strong className="font-heading font-bold text-2xl">
@@ -56,50 +61,78 @@ export function TrainingSession() {
             </div>
           </div>
 
-          <div>
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <div className="bg-card border border-[#252526] text-white rounded-xl flex flex-col items-center p-5 gap-2 h-full">
-                  <IconClock color="#6B6B78"></IconClock>
-                  <p className="text-[18px] font-bold text-center">5555</p>
-                  <span className="text-[12px] text-muted-foreground nowrap">
-                    Duração
-                  </span>
+          {pages === 1 && (
+            <div className="p-6 bg-card border border-[#252526] rounded-b-2xl">
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <div className="bg-[#252526] text-white rounded-xl flex flex-col items-center p-5 h-full justify-center">
+                    <span className="text-[0.75rem] text-muted-foreground uppercase">
+                      Séries
+                    </span>
+                    <p className="text-[24px] font-bold text-center">0/4</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex-1">
-                <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
-                  <IconLayers color="#6B6B78"></IconLayers>
-                  <p className="text-[18px] font-bold text-center">
-                    {"exercises"}
-                  </p>
-                  <span className="text-[12px] text-muted-foreground">
-                    Exercícios
-                  </span>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="bg-card border border-[#252526]  p-4 text-white rounded-xl flex flex-col items-center gap-2 h-full">
-                  <IconFlame color="#6B6B78"></IconFlame>
-                  <p className="text-[18px] font-bold text-center">{`kcal`}</p>
-                  <span className="text-[12px] text-muted-foreground">
-                    Calorias
-                  </span>
-                </div>
-              </div>
-            </div>
 
-            <div>
-              <div>
-                <span>1</span>
+                <div className="flex-1">
+                  <div className="bg-[#252526] text-white rounded-xl flex flex-col items-center p-5 h-full justify-center">
+                    <span className="text-[0.75rem] text-muted-foreground uppercase">
+                      Reps
+                    </span>
+                    <p className="text-[24px] font-bold text-center">8-10</p>
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="bg-[#252526] text-white rounded-xl flex flex-col items-center p-5 h-full justify-center">
+                    <span className="text-[0.75rem] text-muted-foreground uppercase">
+                      carga
+                    </span>
+                    <p className="text-[24px] font-bold text-center">80kg</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center gap-1 py-4">
+                <div
+                  className="bg-[#1E1E22] w-fit p-1 rounded-full
+                "
+                >
+                  <span className="p-2 text-muted-foreground">1</span>
+                </div>
+                <div
+                  className="bg-[#1E1E22] w-fit p-1 rounded-full
+                "
+                >
+                  <span className="p-2 text-muted-foreground">2</span>
+                </div>
+                <div
+                  className="bg-[#1E1E22] w-fit p-1 rounded-full
+                "
+                >
+                  <span className="p-2 text-muted-foreground">3</span>
+                </div>
+                <div
+                  className="bg-[#1E1E22] w-fit p-1 rounded-full
+                "
+                >
+                  <span className="p-2 text-muted-foreground">4</span>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <Button>
+                  <IconCheck></IconCheck>
+                  Concluir Série 1
+                </Button>
+                <Button className="w-fit bg-[#1E1E22] border border-[#2E2E32]">
+                  <IconPause color="white"></IconPause>
+                </Button>
+              </div>
+              <div className="items-center flex justify-center pt-3">
+                <span className="text-[0.75rem] text-muted-foreground ">Descanso: 90s entre séries</span>
               </div>
             </div>
-
-            <div>
-              <Button>Concluir Série 1</Button>
-              <Button>Concluir Série 1</Button>
-            </div>
-          </div>
+          )}
         </div>
       </section>
     </main>

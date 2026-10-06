@@ -492,3 +492,34 @@ export function IconPlay({
     </svg>
   );
 }
+
+export function IconPause({
+  width = "20",
+  height = "20",
+  color = "#000",
+}: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.1665 3.33334H12.4998C12.0396 3.33334 11.6665 3.70644 11.6665 4.16668V15.8333C11.6665 16.2936 12.0396 16.6667 12.4998 16.6667H14.1665C14.6267 16.6667 14.9998 16.2936 14.9998 15.8333V4.16668C14.9998 3.70644 14.6267 3.33334 14.1665 3.33334Z"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M7.5 3.33334H5.83333C5.3731 3.33334 5 3.70644 5 4.16668V15.8333C5 16.2936 5.3731 16.6667 5.83333 16.6667H7.5C7.96024 16.6667 8.33333 16.2936 8.33333 15.8333V4.16668C8.33333 3.70644 7.96024 3.33334 7.5 3.33334Z"
+        stroke={color}
+        stroke-width="1.66667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
