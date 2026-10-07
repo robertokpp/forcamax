@@ -35,7 +35,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Training Training[]
+  Training         Training[]
+  trainingSessions TrainingSession[]
 
   @@map("users")
 }
@@ -50,8 +51,9 @@ model Exercise {
   training          Training[]
   trainingExercises TrainingExercise[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  sessionExercises SessionExercise[]
 
   @@map("exercise")
 }
@@ -72,8 +74,9 @@ model Training {
   exercises         Exercise[]
   trainingExercises TrainingExercise[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  trainingSessions TrainingSession[]
 
   @@map("Training")
 }
@@ -105,4 +108,90 @@ model TargetMuscles {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum SessionStatus {
+  planned
+  in_progress
+  completed
+  cancelled
+}
+
+enum SetStatus {
+  pending
+  completed
+  skipped
+}
+
+model TrainingSession {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  trainingId String
+  training   Training @relation(fields: [trainingId], references: [id])
+
+  status     SessionStatus @default(planned)
+  startedAt  DateTime?
+  finishedAt DateTime?
+  notes      String?
+
+  exercises SessionExercise[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([trainingId])
+  @@map("training_sessions")
+}
+
+model SessionExercise {
+  id String @id @default(uuid())
+
+  sessionId String
+  session   TrainingSession @relation(fields: [sessionId], references: [id])
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  // Cópia do nome para preservar o histórico.
+  exerciseName String
+  position     Int
+  notes        String?
+
+  sets SessionSet[]
+
+  @@unique([sessionId, position])
+  @@index([exerciseId])
+  @@map("session_exercises")
+}
+
+model SessionSet {
+  id String @id @default(uuid())
+
+  sessionExerciseId String
+  sessionExercise   SessionExercise @relation(fields: [sessionExerciseId], references: [id])
+
+  number Int
+  status SetStatus @default(pending)
+
+  // Prescrição copiada da ficha no início da sessão.
+  plannedRepetitions String?
+  plannedWeight      String?
+  plannedRest        String?
+
+  // Resultado efetivamente executado.
+  actualRepetitions Int?
+  actualWeightKg    Decimal? @db.Decimal(7, 2)
+  actualDurationSec Int?
+  actualDistanceM   Decimal? @db.Decimal(10, 2)
+  actualRestSec     Int?
+
+  completedAt DateTime?
+  notes       String?
+
+  @@unique([sessionExerciseId, number])
+  @@map("session_sets")
 }
