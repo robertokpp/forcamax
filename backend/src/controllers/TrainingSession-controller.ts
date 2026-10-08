@@ -17,6 +17,25 @@ class TrainingSessionController {
 
     const { trainingId } = bodySchema.parse(request.body);
 
+    const checkTrainingId = await prisma.training.findUnique({
+      where: { id: trainingId },
+    });
+
+    if (!checkTrainingId) {
+      throw new AppError("Treino nao existe");
+    }
+
+    const activeSession = await prisma.trainingSession.findFirst({
+      where: {
+        userId,
+        status: "in_progress",
+      },
+    });
+
+    if (activeSession) {
+      throw new AppError("Ja existe um treino em andamento", 409);
+    }
+
     const training = await prisma.training.findFirst({
       where: { id: trainingId },
       include: { exercises: true },
@@ -44,16 +63,33 @@ class TrainingSessionController {
       })),
     });
 
-    const sessionExercise = await prisma.sessionExercise.findMany({});
+    const sessionExercises = await prisma.sessionExercise.findMany({
+      where: { sessionId: trainingSession.id },
+      orderBy: { position: "asc" },
+    });
 
     const sessionSet = await prisma.sessionSet.createMany({
-      data: sessionExercise.map((sessionExercise, index) => ({
+      data: sessionExercises.map((sessionExercise, index) => ({
         sessionExerciseId: sessionExercise.id,
         number: index + 1,
       })),
     });
 
-    return response.json();
+    return response.status(201).json(trainingSession);
+  }
+
+  async index(request: Request, response: Response) {
+    const userId = request.user?.id;
+
+    if (!userId) {
+      throw new AppError("User not authenticated", 401);
+    }
+
+    const trainingSession = await prisma.trainingSession.findFirst({
+      where: { userId, status: "in_progress" },
+    });
+
+    return response.json(trainingSession);
   }
 }
 

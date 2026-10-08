@@ -47,8 +47,14 @@ export function Training() {
     setTrainings(response.data);
   }
 
-  async function openCards(trainingId: Training) {
+  function openCards(trainingId: Training) {
     setExercises(trainingId);
+  }
+
+  async function startWorkout() {
+    await api.post("/trainingSessionRouter", {
+      trainingId: exercises?.id,
+    });
   }
 
   useEffect(() => {
@@ -192,7 +198,11 @@ export function Training() {
                 ></CardExercise>
               ))}
               <div>
-                <Button onClick={() => navigate("/SessaoTreino")}>
+                <Button
+                  onClick={() => {
+                    (navigate("/SessaoTreino"), startWorkout());
+                  }}
+                >
                   <IconPlay></IconPlay>
                   INICIAR TREINO
                   <IconArrowRight></IconArrowRight>

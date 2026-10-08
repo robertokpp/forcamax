@@ -1,18 +1,31 @@
 import { Button } from "../components/Button";
-import {
-  IconCheck,
-  IconClock,
-  IconPause,
-  IconX,
-} from "../components/Icons";
-import { useState } from "react";
+import { IconCheck, IconClock, IconPause, IconX } from "../components/Icons";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { api } from "../services/api";
+
 export function TrainingSession() {
   const [pages, setPages] = useState(1);
+  const navigate = useNavigate();
+
+  async function fetchSession() {
+    const response = await api.get("/trainingSessionRouter");
+
+    console.log(response.data);
+  }
+
+  useEffect(() => {
+    fetchSession();
+  }, []);
 
   return (
     <main className="h-screen w-full overflow-y-auto bg-[#0C0C0E]">
       <header className="text-white p-4 border-b flex justify-between items-center">
-        <Button variant="ghost" className="w-fit text-muted-foreground">
+        <Button
+          onClick={() => navigate("/Treinos")}
+          variant="ghost"
+          className="w-fit text-muted-foreground"
+        >
           <IconX color="#6B6B78"></IconX>
           Encerrar
         </Button>
@@ -129,7 +142,9 @@ export function TrainingSession() {
                 </Button>
               </div>
               <div className="items-center flex justify-center pt-3">
-                <span className="text-[0.75rem] text-muted-foreground ">Descanso: 90s entre séries</span>
+                <span className="text-[0.75rem] text-muted-foreground ">
+                  Descanso: 90s entre séries
+                </span>
               </div>
             </div>
           )}

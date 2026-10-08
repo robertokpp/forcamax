@@ -6,6 +6,7 @@ import { sessionsRouter } from "./sessions-router.js";
 import { trainingRouter } from "./training-router.js";
 import { exercisesRouter } from "./exercises-router.js";
 import { targetMusclesRouter } from "./targetMuscles-router.js";
+import { trainingSessionRouter } from "./TrainingSession-router.js";
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.get("/session/validate", (_request, response) => {
 });
 router.use("/training", trainingRouter);
 router.use("/exercises", exercisesRouter);
-router.use("/targetmuscles", targetMusclesRouter)
+router.use("/targetmuscles", targetMusclesRouter);
+router.use("/trainingSessionRouter", trainingSessionRouter);
 
 export { router };
