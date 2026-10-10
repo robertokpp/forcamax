@@ -10,7 +10,6 @@ export function TrainingSession() {
 
   async function fetchSession() {
     const response = await api.get("/trainingSessionRouter");
-
     console.log(response.data);
   }
 

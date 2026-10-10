@@ -85,11 +85,36 @@ class TrainingSessionController {
       throw new AppError("User not authenticated", 401);
     }
 
-    const trainingSession = await prisma.trainingSession.findFirst({
+    const training = await prisma.trainingSession.findFirst({
       where: { userId, status: "in_progress" },
+      include: {
+        training: true,
+        exercises: {
+          include: { exercise: { include: { trainingExercises: true } } },
+        },
+      },
     });
 
-    return response.json(trainingSession);
+    if (!training) {
+      throw new AppError("Treino nao encontrado", 401);
+    }
+
+    const trainingFull = {
+      id: training.id,
+      status: training.status,
+      startedAt: training.startedAt,
+      finishedAt: training.finishedAt,
+      name: training.training.name,
+      description: training.training.description,
+      tag: training.training.tag,
+      difficulty: training.training.difficulty,
+      exercises: training.exercises.map((exercise) => ({
+        id: exercise.exercise.id,
+        name: exercise.exercise.name,
+      })),
+    };
+
+    return response.json(training);
   }
 }
 

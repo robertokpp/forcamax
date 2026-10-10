@@ -39,6 +39,8 @@ class TrainingController {
     return response.json(training);
   }
 
+
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       name: z.string().trim().min(3),
